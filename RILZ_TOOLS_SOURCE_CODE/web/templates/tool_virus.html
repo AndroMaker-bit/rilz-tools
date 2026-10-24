@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virus & Malware Threat Scanner — RILZ WEB</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <style>
+    .scan-mode-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .scan-mode-btn {
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .scan-mode-btn.active {
+      background: var(--primary-dim);
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+    .verdict-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+    .verdict-safe {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid #22c55e;
+      color: #22c55e;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    }
+    .verdict-warning {
+      background: rgba(234, 179, 8, 0.15);
+      border: 1px solid #eab308;
+      color: #eab308;
+      box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
+    }
+    .verdict-danger {
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
+      animation: pulse 1.5s infinite;
+    }
+    .flag-item {
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 3px solid var(--primary);
+      font-size: 0.82rem;
+      color: #f1f5f9;
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+    <!-- Saber Alter vs Rider Live Battle Background Video -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="app-wrapper">
+
+            <!-- Top Header Bar -->
+    <header class="header-glass">
+      <div class="brand-container">
+        <a href="/" style="text-decoration:none;" class="brand-icon">⚡</a>
+        <div>
+          <a href="/" style="text-decoration:none;"><div class="brand-title">RILZ WEB</div></a>
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:#ff1a40; font-weight:700;">⚔️ Saber Alter Edition</span>
+            <span class="brand-badge">v2.1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="/static/playground.html" target="_blank" class="btn-icon-glass" style="text-decoration:none;" title="Buka Cyber Neon Sandbox Playground">🎮</a>
+        <button type="button" class="btn-icon-glass" id="openSettingsBtn" title="Pengaturan & Kontak">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Telemetry Profile Card (All-Tools Lutfizzx Layout) -->
+    <div class="prof">
+      <div class="av" title="Saber Alter Avatar">⚡</div>
+      <div class="pi">
+        <div class="pn">
+          <span>RILZ ARSENAL</span>
+          <span class="vip">ONLINE 24/7</span>
+          <span style="font-size:0.75rem; color:#ff1a40; font-weight:700;">⚔️ Saber Alter</span>
+        </div>
+        <div class="meta">
+          <div><span id="deviceIcon" style="font-size:1rem;">📱</span> Device: <b id="deviceText">Android</b></div>
+          <div><span id="batteryIcon" style="font-size:1rem;">🔋</span> Baterai: <b id="batteryText">100%</b></div>
+          <div><span>🕒</span> Jam: <b id="liveClockText" style="font-family:'JetBrains Mono', Consolas, monospace;">--:--:-- WIB</b></div>
+          <div><span class="pulse-dot-green"></span> Aktif: <b class="on" id="publicUptimeText" style="font-family:'JetBrains Mono', Consolas, monospace;">00j 00m 00d</b></div>
+          <div id="wifiMetaItem"><span class="status-dot"></span> WiFi: <b id="localIpText">127.0.0.1</b></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="/" class="btn-back-nav">
+      <span>⬅️</span> Kembali ke Menu Kotak
+    </a>
+
+    <div class="liquid-card">
+      <div class="card-title-group">
+        <div class="card-title"><span>🛡️</span> Virus & Malware Threat Scanner</div>
+        <div class="card-subtitle">Pindai file atau tautan unduhan mencurigakan dari ancaman virus, trojan, spyware, script jahat, dan ransomware.</div>
+      </div>
+
+      <!-- Mode Toggle -->
+      <div class="scan-mode-toggle">
+        <button type="button" class="scan-mode-btn active" data-mode="file" id="modeFileBtn">
+          <span>📁</span> Pindai File
+        </button>
+        <button type="button" class="scan-mode-btn" data-mode="url" id="modeUrlBtn">
+          <span>🔗</span> Pindai Tautan (URL)
+        </button>
+      </div>
+
+      <!-- File Scan Form -->
+      <div id="fileScanArea">
+        <div class="dropzone-glass" id="fileDropzone" style="margin-bottom:1.25rem;">
+          <div class="dropzone-icon">🔬</div>
+          <div id="fileDropText">Pilih atau Drag & Drop file ke sini untuk discan</div>
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.35rem;">Mendukung EXE, APK, ZIP, PDF, JS, DOC, JPG, dll (Maks 35 MB)</div>
+          <input type="file" id="virusFileInput" style="display:none;">
+        </div>
+
+        <button type="button" class="btn-liquid-primary" id="startFileScanBtn" style="width:100%;">
+          <span>🛡️</span> Jalankan Analisis Keamanan File
+        </button>
+      </div>
+
+      <!-- URL Scan Form -->
+      <div id="urlScanArea" style="display:none;">
+        <div class="input-group">
+          <label class="input-label" for="virusUrlInput">Tautan / URL yang Mau Discan</label>
+          <input type="url" id="virusUrlInput" class="glass-input" placeholder="https://example.com/download/file.apk atau link mencurigakan" autocomplete="off">
+        </div>
+
+        <button type="button" class="btn-liquid-primary" id="startUrlScanBtn" style="width:100%;">
+          <span>🔍</span> Analisis Ancaman Tautan Sekarang
+        </button>
+      </div>
+
+      <!-- Result Box -->
+      <div class="result-box" id="scanResultBox" style="margin-top:1.5rem;"></div>
+    </div>
+
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="/static/js/app.js"></script>
+
+  <script>
+    const modeFileBtn = document.getElementById("modeFileBtn");
+    const modeUrlBtn = document.getElementById("modeUrlBtn");
+    const fileScanArea = document.getElementById("fileScanArea");
+    const urlScanArea = document.getElementById("urlScanArea");
+
+    const dropzone = document.getElementById("fileDropzone");
+    const dropText = document.getElementById("fileDropText");
+    const fileInput = document.getElementById("virusFileInput");
+    const startFileBtn = document.getElementById("startFileScanBtn");
+
+    const urlInput = document.getElementById("virusUrlInput");
+    const startUrlBtn = document.getElementById("startUrlScanBtn");
+    const resultBox = document.getElementById("scanResultBox");
+
+    let selectedFile = null;
+
+    // Toggle Modes
+    modeFileBtn.addEventListener("click", () => {
+      modeFileBtn.classList.add("active");
+      modeUrlBtn.classList.remove("active");
+      fileScanArea.style.display = "block";
+      urlScanArea.style.display = "none";
+      resultBox.classList.remove("active");
+    });
+
+    modeUrlBtn.addEventListener("click", () => {
+      modeUrlBtn.classList.add("active");
+      modeFileBtn.classList.remove("active");
+      fileScanArea.style.display = "none";
+      urlScanArea.style.display = "block";
+      resultBox.classList.remove("active");
+    });
+
+    // File Dropzone handlers
+    dropzone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files.length > 0) {
+        selectedFile = e.target.files[0];
+        dropText.innerHTML = `File siap discan: <strong style="color:var(--primary);">${selectedFile.name}</strong> (${(selectedFile.size / 1024).toFixed(1)} KB)`;
+      }
+    });
+
+    dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.style.borderColor = "var(--primary)"; });
+    dropzone.addEventListener("dragleave", () => { dropzone.style.borderColor = "var(--glass-border)"; });
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = "var(--glass-border)";
+      if (e.dataTransfer.files.length > 0) {
+        selectedFile = e.dataTransfer.files[0];
+        dropText.innerHTML = `File siap discan: <strong style="color:var(--primary);">${selectedFile.name}</strong> (${(selectedFile.size / 1024).toFixed(1)} KB)`;
+      }
+    });
+
+    // Scan File Execution
+    startFileBtn.addEventListener("click", async () => {
+      if (!selectedFile) {
+        if (typeof showToast === "function") showToast("Pilih file yang ingin dianalisis terlebih dahulu", "warning");
+        return;
+      }
+
+      startFileBtn.disabled = true;
+      startFileBtn.innerHTML = `<span>⏳</span> Menganalisis binary & signature...`;
+      resultBox.classList.remove("active");
+
+      try {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const res = await fetch("/api/security/scan-file", { method: "POST", body: formData });
+        const json = await res.json();
+        if (!json.success) throw new Error(json.error || "Gagal memindai file");
+
+        renderScanReport(json.data, "file");
+        if (typeof showToast === "function") showToast("Analisis file selesai!", "success");
+      } catch (err) {
+        resultBox.innerHTML = `<div style="color:#ef4444;">❌ Error: ${err.message}</div>`;
+        resultBox.classList.add("active");
+      } finally {
+        startFileBtn.disabled = false;
+        startFileBtn.innerHTML = `<span>🛡️</span> Jalankan Analisis Keamanan File`;
+      }
+    });
+
+    // Scan URL Execution
+    startUrlBtn.addEventListener("click", async () => {
+      const url = urlInput.value.trim();
+      if (!url) {
+        if (typeof showToast === "function") showToast("Masukkan tautan URL yang ingin discan", "warning");
+        return;
+      }
+
+      startUrlBtn.disabled = true;
+      startUrlBtn.innerHTML = `<span>⏳</span> Menginspeksi payload tautan...`;
+      resultBox.classList.remove("active");
+
+      try {
+        const formData = new FormData();
+        formData.append("url", url);
+
+        const res = await fetch("/api/security/scan-url", { method: "POST", body: formData });
+        const json = await res.json();
+        if (!json.success) throw new Error(json.error || "Gagal memindai tautan");
+
+        renderScanReport(json.data, "url");
+        if (typeof showToast === "function") showToast("Analisis tautan selesai!", "success");
+      } catch (err) {
+        resultBox.innerHTML = `<div style="color:#ef4444;">❌ Error: ${err.message}</div>`;
+        resultBox.classList.add("active");
+      } finally {
+        startUrlBtn.disabled = false;
+        startUrlBtn.innerHTML = `<span>🔍</span> Analisis Ancaman Tautan Sekarang`;
+      }
+    });
+
+    function renderScanReport(data, type) {
+      let badgeClass = "verdict-safe";
+      let icon = "✅";
+      if (data.level === "danger") {
+        badgeClass = "verdict-danger";
+        icon = "🚨";
+      } else if (data.level === "warning") {
+        badgeClass = "verdict-warning";
+        icon = "⚠️";
+      }
+
+      let flagsHtml = "";
+      if (data.flags && data.flags.length > 0) {
+        flagsHtml = `
+          <div style="margin-top:1rem;">
+            <div style="font-weight:700; font-size:0.85rem; color:#fff; margin-bottom:0.4rem;">🚨 Temuan Indikator Ancaman:</div>
+            ${data.flags.map(f => `<div class="flag-item">${f}</div>`).join("")}
+          </div>
+        `;
+      } else {
+        flagsHtml = `<div style="color:#22c55e; font-size:0.85rem; margin-top:0.8rem;">✔ Tidak ditemukan signature malware atau kode terenkripsi yang mencurigakan.</div>`;
+      }
+
+      let metaHtml = "";
+      if (type === "file") {
+        metaHtml = `
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+            <div>Nama File: <strong style="color:#fff;">${data.filename}</strong></div>
+            <div>Ukuran: <strong style="color:#fff;">${data.size_kb} KB</strong></div>
+            <div>Entropi: <strong style="color:#fff;">${data.entropy} / 8.0</strong></div>
+            <div>Skor Ancaman: <strong style="color:#fff;">${data.threat_score} / 100</strong></div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4); padding:0.6rem 0.8rem; border-radius:8px; font-family:monospace; font-size:0.72rem; word-break:break-all; color:#94a3b8; margin-bottom:0.75rem;">
+            SHA-256: ${data.sha256}
+          </div>
+        `;
+      } else {
+        metaHtml = `
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+            <div>Target Host: <strong style="color:#fff;">${data.hostname}</strong></div>
+            <div>IP Server: <strong style="color:#fff;">${data.resolved_ip}</strong></div>
+            <div>Tipe Konten: <strong style="color:#fff;">${data.content_type}</strong></div>
+            <div>Skor Ancaman: <strong style="color:#fff;">${data.threat_score} / 100</strong></div>
+          </div>
+        `;
+      }
+
+      resultBox.innerHTML = `
+        <div class="verdict-badge ${badgeClass}">
+          <span>${icon}</span>
+          <span>${data.verdict}</span>
+        </div>
+        ${metaHtml}
+        ${flagsHtml}
+      `;
+      resultBox.classList.add("active");
+    }
+  </script>
+</body>
+</html>

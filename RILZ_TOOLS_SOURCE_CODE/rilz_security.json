@@ -1,0 +1,8 @@
+{
+  "pin_enabled": true,
+  "master_pin": "1337",
+  "anti_inspect": true,
+  "rate_limit_rpm": 60,
+  "block_ssrf": true,
+  "secret_salt": "rilz_saber_alter_secure_salt_2026"
+}

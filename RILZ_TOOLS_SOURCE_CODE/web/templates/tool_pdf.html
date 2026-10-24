@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All-in-One PDF Toolkit — RILZ WEB</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📑</text></svg>">
+  <style>
+    .pdf-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.35rem;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+    }
+    .pdf-tab-btn {
+      flex: 1;
+      padding: 0.65rem 0.5rem;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .pdf-tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+    .dropzone-box {
+      border: 2px dashed rgba(255, 26, 64, 0.35);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-bottom: 1.25rem;
+    }
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: #ff1a40;
+      background: rgba(255, 26, 64, 0.08);
+      box-shadow: 0 0 20px rgba(255, 26, 64, 0.2);
+    }
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Saber Alter Live Video Background -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="app-wrapper">
+
+            <!-- Top Header Bar -->
+    <header class="header-glass">
+      <div class="brand-container">
+        <a href="/" style="text-decoration:none;" class="brand-icon">⚡</a>
+        <div>
+          <a href="/" style="text-decoration:none;"><div class="brand-title">RILZ WEB</div></a>
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:#ff1a40; font-weight:700;">⚔️ Saber Alter Edition</span>
+            <span class="brand-badge">v2.1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="/static/playground.html" target="_blank" class="btn-icon-glass" style="text-decoration:none;" title="Buka Cyber Neon Sandbox Playground">🎮</a>
+        <button type="button" class="btn-icon-glass" id="openSettingsBtn" title="Pengaturan & Kontak">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Telemetry Profile Card (All-Tools Lutfizzx Layout) -->
+    <div class="prof">
+      <div class="av" title="Saber Alter Avatar">⚡</div>
+      <div class="pi">
+        <div class="pn">
+          <span>RILZ ARSENAL</span>
+          <span class="vip">ONLINE 24/7</span>
+          <span style="font-size:0.75rem; color:#ff1a40; font-weight:700;">⚔️ Saber Alter</span>
+        </div>
+        <div class="meta">
+          <div><span id="deviceIcon" style="font-size:1rem;">📱</span> Device: <b id="deviceText">Android</b></div>
+          <div><span id="batteryIcon" style="font-size:1rem;">🔋</span> Baterai: <b id="batteryText">100%</b></div>
+          <div><span>🕒</span> Jam: <b id="liveClockText" style="font-family:'JetBrains Mono', Consolas, monospace;">--:--:-- WIB</b></div>
+          <div><span class="pulse-dot-green"></span> Aktif: <b class="on" id="publicUptimeText" style="font-family:'JetBrains Mono', Consolas, monospace;">00j 00m 00d</b></div>
+          <div id="wifiMetaItem"><span class="status-dot"></span> WiFi: <b id="localIpText">127.0.0.1</b></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="/" class="btn-back-nav">
+      <span>⬅️</span> Kembali ke Menu Kotak
+    </a>
+
+    <div class="liquid-card">
+      <div class="card-title-group">
+        <div class="badge-safelink" style="border-color:rgba(255,26,64,0.4); color:#ff1a40;">
+          <span>📑</span> Document Utility Suite
+        </div>
+        <div class="card-title"><span>📑</span> All-in-One PDF Toolkit</div>
+        <div class="card-subtitle">Kompres ukuran dokumen PDF (hemat sampai 80%), gabungkan multiple PDF, atau ubah galeri foto menjadi satu file PDF rapi.</div>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="pdf-tabs">
+        <button type="button" class="pdf-tab-btn active" data-tab="compress">
+          <span>📉</span> Kompres PDF
+        </button>
+        <button type="button" class="pdf-tab-btn" data-tab="merge">
+          <span>📑</span> Gabung PDF
+        </button>
+        <button type="button" class="pdf-tab-btn" data-tab="images">
+          <span>🖼️</span> Foto ke PDF
+        </button>
+      </div>
+
+      <!-- Tab 1: Compress PDF -->
+      <div id="tab-compress" class="pdf-pane">
+        <form id="compressForm">
+          <div class="dropzone-box" id="dropzoneCompress">
+            <div style="font-size:2.8rem; margin-bottom:0.5rem;">📄</div>
+            <div style="font-weight:700; font-size:1rem; color:#fff;" id="labelCompress">Klik atau Tarik File PDF ke Sini</div>
+            <div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.35rem;">Mendukung semua file dokumen .pdf</div>
+            <input type="file" id="fileCompress" accept=".pdf" style="display:none;" required>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+            <label class="input-label" style="margin-bottom:0;">Tingkat Kompresi:</label>
+            <select id="qualityCompress" class="glass-input" style="width:auto; padding:0.4rem 0.8rem; font-size:0.85rem;">
+              <option value="medium" selected>Standard (Rekomendasi - Kualitas Bagus)</option>
+              <option value="high">Ringan (Kualitas Maksimal)</option>
+              <option value="low">Maksimal (Ukuran Terkecil)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-liquid-primary" id="btnCompressSubmit">
+            <span>⚡</span> Kompres PDF Sekarang
+          </button>
+        </form>
+
+        <div class="result-box" id="resultCompress"></div>
+      </div>
+
+      <!-- Tab 2: Merge PDF -->
+      <div id="tab-merge" class="pdf-pane" style="display:none;">
+        <form id="mergeForm">
+          <div class="dropzone-box" id="dropzoneMerge">
+            <div style="font-size:2.8rem; margin-bottom:0.5rem;">📑</div>
+            <div style="font-weight:700; font-size:1rem; color:#fff;" id="labelMerge">Pilih 2 atau Lebih File PDF</div>
+            <div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.35rem;">Tahan Ctrl / Shift untuk memilih beberapa file sekaligus</div>
+            <input type="file" id="filesMerge" accept=".pdf" multiple style="display:none;" required>
+          </div>
+
+          <div id="mergeList" style="margin-bottom:1rem; display:none;">
+            <div style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); margin-bottom:0.5rem;">File yang akan digabung:</div>
+            <div id="mergeItemsContainer" style="display:flex; flex-direction:column; gap:0.4rem;"></div>
+          </div>
+
+          <button type="submit" class="btn-liquid-primary" id="btnMergeSubmit">
+            <span>🔗</span> Gabungkan Semua PDF
+          </button>
+        </form>
+
+        <div class="result-box" id="resultMerge"></div>
+      </div>
+
+      <!-- Tab 3: Images to PDF -->
+      <div id="tab-images" class="pdf-pane" style="display:none;">
+        <form id="imagesForm">
+          <div class="dropzone-box" id="dropzoneImages">
+            <div style="font-size:2.8rem; margin-bottom:0.5rem;">🖼️</div>
+            <div style="font-weight:700; font-size:1rem; color:#fff;" id="labelImages">Pilih Foto / Gambar (JPG, PNG, WebP)</div>
+            <div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.35rem;">Bisa pilih banyak foto tugas/ijazah sekaligus</div>
+            <input type="file" id="filesImages" accept="image/*" multiple style="display:none;" required>
+          </div>
+
+          <div id="imagesCountPreview" style="font-size:0.85rem; color:#ff1a40; font-weight:700; margin-bottom:1rem; display:none;"></div>
+
+          <button type="submit" class="btn-liquid-primary" id="btnImagesSubmit">
+            <span>📄</span> Buat Dokumen PDF dari Foto
+          </button>
+        </form>
+
+        <div class="result-box" id="resultImages"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-glass">
+      <div class="modal-header">
+        <div class="modal-title"><span>⚙️</span> Pengaturan & Info</div>
+        <button type="button" class="modal-close" id="closeSettingsBtn">✕</button>
+      </div>
+      <div class="setting-section">
+        <div class="setting-title">⚔️ Tema Tampilan</div>
+        <div style="background:rgba(255,26,64,0.1); border:1px solid rgba(255,26,64,0.3); border-radius:12px; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.75rem;">
+          <div style="width:14px; height:14px; border-radius:50%; background:#ff1a40; box-shadow:0 0 10px #ff1a40;"></div>
+          <div>
+            <div style="font-weight:800; font-size:0.88rem; color:#fff;">Saber Alter Crimson Red</div>
+            <div style="font-size:0.75rem; color:var(--text-secondary);">Live Video: Saber Alter vs Rider (Heaven's Feel)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

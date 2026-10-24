@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brat Generator — RILZ WEB</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟩</text></svg>">
+  <style>
+    .brat-canvas-container {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+    #bratCanvas {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1/1;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .color-pill-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .color-pill {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .color-pill.active {
+      border-color: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body>
+
+    <!-- Saber Alter vs Rider Live Battle Background Video -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="app-wrapper">
+
+            <!-- Top Header Bar -->
+    <header class="header-glass">
+      <div class="brand-container">
+        <a href="/" style="text-decoration:none;" class="brand-icon">⚡</a>
+        <div>
+          <a href="/" style="text-decoration:none;"><div class="brand-title">RILZ WEB</div></a>
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:#ff1a40; font-weight:700;">⚔️ Saber Alter Edition</span>
+            <span class="brand-badge">v2.1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="/static/playground.html" target="_blank" class="btn-icon-glass" style="text-decoration:none;" title="Buka Cyber Neon Sandbox Playground">🎮</a>
+        <button type="button" class="btn-icon-glass" id="openSettingsBtn" title="Pengaturan & Kontak">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Telemetry Profile Card (All-Tools Lutfizzx Layout) -->
+    <div class="prof">
+      <div class="av" title="Saber Alter Avatar">⚡</div>
+      <div class="pi">
+        <div class="pn">
+          <span>RILZ ARSENAL</span>
+          <span class="vip">ONLINE 24/7</span>
+          <span style="font-size:0.75rem; color:#ff1a40; font-weight:700;">⚔️ Saber Alter</span>
+        </div>
+        <div class="meta">
+          <div><span id="deviceIcon" style="font-size:1rem;">📱</span> Device: <b id="deviceText">Android</b></div>
+          <div><span id="batteryIcon" style="font-size:1rem;">🔋</span> Baterai: <b id="batteryText">100%</b></div>
+          <div><span>🕒</span> Jam: <b id="liveClockText" style="font-family:'JetBrains Mono', Consolas, monospace;">--:--:-- WIB</b></div>
+          <div><span class="pulse-dot-green"></span> Aktif: <b class="on" id="publicUptimeText" style="font-family:'JetBrains Mono', Consolas, monospace;">00j 00m 00d</b></div>
+          <div id="wifiMetaItem"><span class="status-dot"></span> WiFi: <b id="localIpText">127.0.0.1</b></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="/" class="btn-back-nav">
+      <span>⬅️</span> Kembali ke Menu Kotak
+    </a>
+
+    <div class="liquid-card">
+      <div class="card-title-group">
+        <div class="card-title"><span>🟩</span> Brat Stiker & Cover Generator</div>
+        <div class="card-subtitle">Bikin gambar & stiker teks gaya album Brat Charli XCX yang lagi viral di TikTok dan Instagram.</div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="bratText">Teks Brat</label>
+        <input type="text" id="bratText" class="glass-input" value="mumpung masih muda" placeholder="Ketik kata-kata brat kamu..." autocomplete="off">
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Warna Background</label>
+        <div class="color-pill-group">
+          <button type="button" class="color-pill active" data-bg="#8ace00" data-tc="#000000" style="background:#8ace00; color:#000;">Brat Green</button>
+          <button type="button" class="color-pill" data-bg="#ffffff" data-tc="#000000" style="background:#ffffff; color:#000;">White</button>
+          <button type="button" class="color-pill" data-bg="#050505" data-tc="#ffffff" style="background:#050505; color:#fff;">Black OLED</button>
+          <button type="button" class="color-pill" data-bg="#ff2a85" data-tc="#ffffff" style="background:#ff2a85; color:#fff;">Pink Neon</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+          <label class="input-label" style="margin-bottom:0;">Ukuran Font</label>
+          <span class="badge-res" id="fontSizeVal">52px</span>
+        </div>
+        <input type="range" id="bratFontSize" min="30" max="90" value="52" class="glass-slider">
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1.5rem;">
+        <input type="checkbox" id="bratBlur" checked style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
+        <label for="bratBlur" style="font-size:0.9rem; color:var(--text-secondary); cursor:pointer;">
+          Efek Blurry Aesthetic (Khas Album Brat)
+        </label>
+      </div>
+
+      <!-- Canvas Preview -->
+      <div class="brat-canvas-container">
+        <canvas id="bratCanvas" width="600" height="600"></canvas>
+      </div>
+
+      <div style="display:flex; gap:0.75rem;">
+        <button type="button" class="btn-liquid-primary" id="downloadBratBtn" style="flex:1;">
+          <span>📥</span> Download Gambar PNG
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="/static/js/app.js"></script>
+
+  <script>
+    const canvas = document.getElementById("bratCanvas");
+    const ctx = canvas.getContext("2d");
+    const textInp = document.getElementById("bratText");
+    const fontSlider = document.getElementById("bratFontSize");
+    const fontVal = document.getElementById("fontSizeVal");
+    const blurCb = document.getElementById("bratBlur");
+    const colorPills = document.querySelectorAll(".color-pill");
+    const dlBtn = document.getElementById("downloadBratBtn");
+
+    let currentBg = "#8ace00";
+    let currentTc = "#000000";
+
+    function drawBrat() {
+      const text = textInp.value.trim().toLowerCase() || "brat";
+      const size = parseInt(fontSlider.value);
+      fontVal.textContent = size + "px";
+
+      // Clear & Draw Background
+      ctx.filter = "none";
+      ctx.fillStyle = currentBg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Setup Text
+      ctx.fillStyle = currentTc;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = `700 ${size}px Arial, Helvetica, sans-serif`;
+
+      if (blurCb.checked) {
+        ctx.filter = "blur(1.6px)";
+      } else {
+        ctx.filter = "none";
+      }
+
+      // Word wrapping
+      const words = text.split(" ");
+      let lines = [];
+      let currentLine = words[0];
+
+      for (let i = 1; i < words.length; i++) {
+        let testLine = currentLine + " " + words[i];
+        let metrics = ctx.measureText(testLine);
+        if (metrics.width > canvas.width * 0.85) {
+          lines.push(currentLine);
+          currentLine = words[i];
+        } else {
+          currentLine = testLine;
+        }
+      }
+      lines.push(currentLine);
+
+      // Draw wrapped lines centered vertically
+      const lineHeight = size * 1.15;
+      const totalHeight = lines.length * lineHeight;
+      let startY = (canvas.height - totalHeight) / 2 + lineHeight / 2;
+
+      for (let i = 0; i < lines.length; i++) {
+        ctx.fillText(lines[i], canvas.width / 2, startY + (i * lineHeight));
+      }
+      ctx.filter = "none";
+    }
+
+    textInp.addEventListener("input", drawBrat);
+    fontSlider.addEventListener("input", drawBrat);
+    blurCb.addEventListener("change", drawBrat);
+
+    colorPills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        colorPills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        currentBg = pill.dataset.bg;
+        currentTc = pill.dataset.tc;
+        drawBrat();
+      });
+    });
+
+    dlBtn.addEventListener("click", () => {
+      const link = document.createElement("a");
+      link.download = `brat_${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      if (typeof showToast === "function") showToast("Stiker Brat berhasil diunduh!", "success");
+    });
+
+    // Initial draw
+    drawBrat();
+  </script>
+</body>
+</html>

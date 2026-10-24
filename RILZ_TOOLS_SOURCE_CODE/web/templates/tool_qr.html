@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Matrix Lab — RILZ WEB</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
+</head>
+<body>
+    <!-- Saber Alter vs Rider Live Battle Background Video -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="app-wrapper">
+            <!-- Top Header Bar -->
+    <header class="header-glass">
+      <div class="brand-container">
+        <a href="/" style="text-decoration:none;" class="brand-icon">⚡</a>
+        <div>
+          <a href="/" style="text-decoration:none;"><div class="brand-title">RILZ WEB</div></a>
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:#ff1a40; font-weight:700;">⚔️ Saber Alter Edition</span>
+            <span class="brand-badge">v2.1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="/static/playground.html" target="_blank" class="btn-icon-glass" style="text-decoration:none;" title="Buka Cyber Neon Sandbox Playground">🎮</a>
+        <button type="button" class="btn-icon-glass" id="openSettingsBtn" title="Pengaturan & Kontak">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Telemetry Profile Card (All-Tools Lutfizzx Layout) -->
+    <div class="prof">
+      <div class="av" title="Saber Alter Avatar">⚡</div>
+      <div class="pi">
+        <div class="pn">
+          <span>RILZ ARSENAL</span>
+          <span class="vip">ONLINE 24/7</span>
+          <span style="font-size:0.75rem; color:#ff1a40; font-weight:700;">⚔️ Saber Alter</span>
+        </div>
+        <div class="meta">
+          <div><span id="deviceIcon" style="font-size:1rem;">📱</span> Device: <b id="deviceText">Android</b></div>
+          <div><span id="batteryIcon" style="font-size:1rem;">🔋</span> Baterai: <b id="batteryText">100%</b></div>
+          <div><span>🕒</span> Jam: <b id="liveClockText" style="font-family:'JetBrains Mono', Consolas, monospace;">--:--:-- WIB</b></div>
+          <div><span class="pulse-dot-green"></span> Aktif: <b class="on" id="publicUptimeText" style="font-family:'JetBrains Mono', Consolas, monospace;">00j 00m 00d</b></div>
+          <div id="wifiMetaItem"><span class="status-dot"></span> WiFi: <b id="localIpText">127.0.0.1</b></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="/" class="btn-back-nav">
+      <span>⬅️</span> Kembali ke Menu Kotak
+    </a>
+
+    <div class="liquid-card">
+      <div class="card-title-group">
+        <div class="card-title"><span>📱</span> QR Code Matrix Generator</div>
+        <div class="card-subtitle">Buat QR Code resolusi tinggi untuk tautan, teks, kontak, atau kredensial WiFi.</div>
+      </div>
+
+      <form id="qrForm">
+        <div class="input-group">
+          <label class="input-label" for="qrText">Teks atau URL</label>
+          <input type="text" id="qrText" class="glass-input" placeholder="Masukkan URL atau teks pesan..." required autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn-liquid-primary" id="qrSubmitBtn">
+          <span>📱</span> Generate QR Matrix
+        </button>
+      </form>
+
+      <div class="result-box" id="qrResult"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-glass">
+      <div class="modal-header">
+        <div class="modal-title"><span>⚙️</span> Pengaturan & Info</div>
+        <button type="button" class="modal-close" id="closeSettingsBtn">✕</button>
+      </div>
+            <!-- Cyber Theme Badge -->
+      <div class="setting-section">
+        <div class="setting-title">⚔️ Tema Tampilan</div>
+        <div style="background:rgba(255,26,64,0.1); border:1px solid rgba(255,26,64,0.3); border-radius:12px; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.75rem;">
+          <div style="width:14px; height:14px; border-radius:50%; background:#ff1a40; box-shadow:0 0 10px #ff1a40;"></div>
+          <div>
+            <div style="font-weight:800; font-size:0.88rem; color:#fff;">Saber Alter Crimson Red</div>
+            <div style="font-size:0.75rem; color:var(--text-secondary);">Live Video: Saber Alter vs Rider (Heaven's Feel)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

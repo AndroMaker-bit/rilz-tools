@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Gateway — Akses Terproteksi RILZ</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <style>
+    .lock-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+    .lock-card {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 26, 64, 0.35);
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 26, 64, 0.25);
+      padding: 2.25rem;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      animation: floatIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .shield-icon {
+      font-size: 3.5rem;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+      filter: drop-shadow(0 0 15px rgba(255, 26, 64, 0.6));
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(255, 26, 64, 0.5)); }
+      50% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(255, 26, 64, 0.85)); }
+    }
+    .lock-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+    .lock-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 1.75rem;
+    }
+    .pin-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 26, 64, 0.4);
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      color: #fff;
+      font-size: 1.4rem;
+      text-align: center;
+      letter-spacing: 0.4em;
+      font-family: monospace;
+      outline: none;
+      transition: all 0.25s ease;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    .pin-input:focus {
+      border-color: #ff1a40;
+      box-shadow: 0 0 20px rgba(255, 26, 64, 0.4), inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    .lock-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ff1a40, #b91c1c);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 1.25rem;
+      box-shadow: 0 10px 25px rgba(255, 26, 64, 0.4);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .lock-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(255, 26, 64, 0.6);
+    }
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      margin-top: 1.5rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .error-msg {
+      color: #ff4d6d;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 0.75rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Saber Alter Background Video -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="lock-wrapper">
+    <div class="lock-card">
+      <div class="shield-icon">🛡️</div>
+      <div class="lock-title">RILZ SECURE GATEWAY</div>
+      <div class="lock-desc">
+        Akses web ini dilindungi sistem keamanan <strong>Anti-Hack & Zero-Trust Shield</strong>. Masukkan Master PIN Keamanan untuk membuka portal tools.
+      </div>
+
+      <form id="lockForm">
+        <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="16" autofocus required autocomplete="off">
+        <div id="errorMsg" class="error-msg">⚠️ PIN salah atau akses tidak sah!</div>
+
+        <button type="submit" class="lock-btn" id="unlockBtn">
+          <span>🔓</span> Buka Akses Portal
+        </button>
+      </form>
+
+      <div class="security-badge">
+        <span>🔒</span> 256-Bit Token Encrypted • Rate-Limit Shield Active
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Anti-DevTools on lock screen
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("keydown", e => {
+      if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) || (e.ctrlKey && e.key === "u")) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    const form = document.getElementById("lockForm");
+    const pinInput = document.getElementById("pinInput");
+    const errorMsg = document.getElementById("errorMsg");
+    const unlockBtn = document.getElementById("unlockBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const pin = pinInput.value.trim();
+      if (!pin) return;
+
+      unlockBtn.disabled = true;
+      unlockBtn.innerHTML = "<span>⏳</span> Memverifikasi Token...";
+      errorMsg.style.display = "none";
+
+      try {
+        const formData = new FormData();
+        formData.append("pin", pin);
+
+        const res = await fetch("/api/security/login", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          // Success: redirect to destination or home
+          const urlParams = new URLSearchParams(window.location.search);
+          const next = urlParams.get("next") || "/";
+          window.location.href = next;
+        } else {
+          errorMsg.innerText = data.error || "⚠️ PIN salah! Percobaan dicatat.";
+          errorMsg.style.display = "block";
+          pinInput.value = "";
+          pinInput.focus();
+        }
+      } catch (err) {
+        errorMsg.innerText = "Gagal menghubungi server keamanan.";
+        errorMsg.style.display = "block";
+      } finally {
+        unlockBtn.disabled = false;
+        unlockBtn.innerHTML = "<span>🔓</span> Buka Akses Portal";
+      }
+    });
+  </script>
+</body>
+</html>

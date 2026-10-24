@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TempMail & OTP Inbox — RILZ WEB</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📬</text></svg>">
+  <style>
+    .mail-box-display {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--primary-border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .mail-address {
+      font-family: monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      word-break: break-all;
+    }
+    .inbox-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .inbox-item:hover {
+      border-color: var(--primary);
+      background: var(--primary-dim);
+    }
+    .inbox-sender {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+    .inbox-subject {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+    .inbox-date {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+    .mail-body-view {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+      color: #f1f5f9;
+      line-height: 1.6;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+
+    <!-- Saber Alter vs Rider Live Battle Background Video -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="app-wrapper">
+
+            <!-- Top Header Bar -->
+    <header class="header-glass">
+      <div class="brand-container">
+        <a href="/" style="text-decoration:none;" class="brand-icon">⚡</a>
+        <div>
+          <a href="/" style="text-decoration:none;"><div class="brand-title">RILZ WEB</div></a>
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:#ff1a40; font-weight:700;">⚔️ Saber Alter Edition</span>
+            <span class="brand-badge">v2.1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="/static/playground.html" target="_blank" class="btn-icon-glass" style="text-decoration:none;" title="Buka Cyber Neon Sandbox Playground">🎮</a>
+        <button type="button" class="btn-icon-glass" id="openSettingsBtn" title="Pengaturan & Kontak">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Telemetry Profile Card (All-Tools Lutfizzx Layout) -->
+    <div class="prof">
+      <div class="av" title="Saber Alter Avatar">⚡</div>
+      <div class="pi">
+        <div class="pn">
+          <span>RILZ ARSENAL</span>
+          <span class="vip">ONLINE 24/7</span>
+          <span style="font-size:0.75rem; color:#ff1a40; font-weight:700;">⚔️ Saber Alter</span>
+        </div>
+        <div class="meta">
+          <div><span id="deviceIcon" style="font-size:1rem;">📱</span> Device: <b id="deviceText">Android</b></div>
+          <div><span id="batteryIcon" style="font-size:1rem;">🔋</span> Baterai: <b id="batteryText">100%</b></div>
+          <div><span>🕒</span> Jam: <b id="liveClockText" style="font-family:'JetBrains Mono', Consolas, monospace;">--:--:-- WIB</b></div>
+          <div><span class="pulse-dot-green"></span> Aktif: <b class="on" id="publicUptimeText" style="font-family:'JetBrains Mono', Consolas, monospace;">00j 00m 00d</b></div>
+          <div id="wifiMetaItem"><span class="status-dot"></span> WiFi: <b id="localIpText">127.0.0.1</b></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="/" class="btn-back-nav">
+      <span>⬅️</span> Kembali ke Menu Kotak
+    </a>
+
+    <div class="liquid-card">
+      <div class="card-title-group">
+        <div class="card-title"><span>📬</span> TempMail (Email Sementara & Cek OTP)</div>
+        <div class="card-subtitle">Buat alamat email sekali pakai untuk verifikasi akun, kode OTP, atau download file tanpa harus membocorkan email pribadi kamu.</div>
+      </div>
+
+      <!-- Active Email Address Box -->
+      <div class="mail-box-display">
+        <div>
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:0.25rem;">Alamat Email Sementara Kamu:</div>
+          <div class="mail-address" id="currentEmailText">Memuat email...</div>
+        </div>
+        <button type="button" class="btn-liquid-secondary" id="copyEmailBtn" style="white-space:nowrap; padding:0.6rem 1rem;">
+          📋 Salin
+        </button>
+      </div>
+
+      <div style="display:flex; gap:0.75rem; margin-bottom:1.5rem;">
+        <button type="button" class="btn-liquid-primary" id="genNewEmailBtn" style="flex:1;">
+          <span>⚡</span> Buat Email Baru
+        </button>
+        <button type="button" class="btn-liquid-secondary" id="checkInboxBtn" style="flex:1;">
+          <span>🔄</span> Cek Pesan Masuk (Inbox)
+        </button>
+      </div>
+
+      <!-- Inbox List -->
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+          <div style="font-weight:700; font-size:0.95rem; color:#fff;">Kotak Masuk (Inbox)</div>
+          <span style="font-size:0.78rem; color:var(--text-dim);" id="inboxCount">0 Pesan</span>
+        </div>
+
+        <div id="inboxContainer">
+          <div style="padding:1.5rem; text-align:center; color:var(--text-dim); font-size:0.85rem;">
+            Belum ada pesan masuk. Kirim email atau OTP ke alamat di atas, lalu klik "Cek Pesan Masuk".
+          </div>
+        </div>
+
+        <div id="mailDetailBox" style="display:none;" class="mail-body-view">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; border-bottom:1px solid var(--glass-border); padding-bottom:0.5rem;">
+            <strong id="mailDetailSubject" style="color:var(--primary);"></strong>
+            <button type="button" id="closeDetailBtn" style="color:var(--text-dim); cursor:pointer;">✕ Tutup</button>
+          </div>
+          <div id="mailDetailFrom" style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.5rem;"></div>
+          <div id="mailDetailContent" style="white-space:pre-wrap;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="/static/js/app.js"></script>
+
+  <script>
+    let currentToken = "";
+    const emailText = document.getElementById("currentEmailText");
+    const copyBtn = document.getElementById("copyEmailBtn");
+    const genBtn = document.getElementById("genNewEmailBtn");
+    const checkBtn = document.getElementById("checkInboxBtn");
+    const inboxContainer = document.getElementById("inboxContainer");
+    const inboxCount = document.getElementById("inboxCount");
+    const detailBox = document.getElementById("mailDetailBox");
+    const detailSub = document.getElementById("mailDetailSubject");
+    const detailFrom = document.getElementById("mailDetailFrom");
+    const detailBody = document.getElementById("mailDetailContent");
+    const closeDetail = document.getElementById("closeDetailBtn");
+
+    async function generateEmail() {
+      emailText.textContent = "Sedang mengenerate...";
+      inboxContainer.innerHTML = `<div style="padding:1.5rem; text-align:center; color:var(--text-dim);">Menunggu pesan masuk...</div>`;
+      inboxCount.textContent = "0 Pesan";
+      detailBox.style.display = "none";
+
+      try {
+        const res = await fetch("/api/tempmail/generate");
+        const data = await res.json();
+        if (data.success) {
+          currentToken = data.token;
+          emailText.textContent = data.email;
+          if (typeof showToast === "function") showToast("Email sementara aktif!");
+        } else {
+          emailText.textContent = "Gagal memuat email: " + (data.error || "");
+        }
+      } catch (e) {
+        emailText.textContent = "Error koneksi email";
+      }
+    }
+
+    async function checkInbox() {
+      if (!currentToken) return;
+      checkBtn.innerHTML = `<span>⏳</span> Mengecek...`;
+      try {
+        const res = await fetch(`/api/tempmail/messages?token=${encodeURIComponent(currentToken)}`);
+        const data = await res.json();
+        if (data.success && data.messages.length > 0) {
+          inboxCount.textContent = `${data.messages.length} Pesan`;
+          inboxContainer.innerHTML = data.messages.map(m => `
+            <div class="inbox-item" onclick="readMessage('${m.id}')">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="inbox-sender">${m.from}</div>
+                <div class="inbox-date">${m.date}</div>
+              </div>
+              <div class="inbox-subject">${m.subject || "(Tanpa Subjek)"}</div>
+            </div>
+          `).join("");
+          if (typeof showToast === "function") showToast(`Ditemukan ${data.messages.length} pesan baru!`, "success");
+        } else {
+          inboxCount.textContent = "0 Pesan";
+          inboxContainer.innerHTML = `<div style="padding:1.5rem; text-align:center; color:var(--text-dim); font-size:0.85rem;">Kotak masuk masih kosong. Belum ada email masuk.</div>`;
+          if (typeof showToast === "function") showToast("Belum ada pesan baru", "info");
+        }
+      } catch (e) {
+        if (typeof showToast === "function") showToast("Gagal mengecek inbox", "error");
+      } finally {
+        checkBtn.innerHTML = `<span>🔄</span> Cek Pesan Masuk (Inbox)`;
+      }
+    }
+
+    async function readMessage(id) {
+      detailBox.style.display = "block";
+      detailSub.textContent = "Memuat isi pesan...";
+      detailBody.textContent = "";
+
+      try {
+        const res = await fetch(`/api/tempmail/read?token=${encodeURIComponent(currentToken)}&msg_id=${encodeURIComponent(id)}`);
+        const data = await res.json();
+        if (data.success) {
+          detailSub.textContent = data.message.subject || "(Tanpa Subjek)";
+          detailFrom.textContent = `Dari: ${data.message.from} | Tanggal: ${data.message.date}`;
+          detailBody.textContent = data.message.textBody || "Isi email kosong";
+          detailBox.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (e) {
+        detailBody.textContent = "Gagal memuat isi pesan.";
+      }
+    }
+
+    closeDetail.addEventListener("click", () => {
+      detailBox.style.display = "none";
+    });
+
+    copyBtn.addEventListener("click", () => {
+      const email = emailText.textContent;
+      if (email && email.includes("@")) {
+        navigator.clipboard.writeText(email);
+        if (typeof showToast === "function") showToast("Alamat email disalin!", "success");
+      }
+    });
+
+    genBtn.addEventListener("click", generateEmail);
+    checkBtn.addEventListener("click", checkInbox);
+
+    // Initial load
+    generateEmail();
+  </script>
+</body>
+</html>

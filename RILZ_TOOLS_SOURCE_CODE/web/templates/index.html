@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RILZ WEB — Saber Alter Edition</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Saber Alter vs Rider Live Battle Background Video -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="app-wrapper">
+
+            <!-- Top Header Bar -->
+    <header class="header-glass">
+      <div class="brand-container">
+        <div class="brand-icon">⚡</div>
+        <div>
+          <div class="brand-title">RILZ WEB</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:#ff1a40; font-weight:700;">⚔️ Saber Alter Edition</span>
+            <span class="brand-badge">v2.1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="/edukids" class="btn-icon-glass" style="text-decoration:none;" title="Buka Game EduKids Belajar Anak (TK & SD)">🎒</a>
+        <a href="/static/playground.html" target="_blank" class="btn-icon-glass" style="text-decoration:none;" title="Buka Cyber Neon Sandbox Playground">🎮</a>
+        <button type="button" class="btn-icon-glass" id="openSettingsBtn" title="Pengaturan & Kontak">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Telemetry Profile Card (All-Tools Lutfizzx Layout) -->
+    <div class="prof">
+      <div class="av" title="Saber Alter Avatar">⚡</div>
+      <div class="pi">
+        <div class="pn">
+          <span>RILZ ARSENAL</span>
+          <span class="vip">ONLINE 24/7</span>
+          <span style="font-size:0.75rem; color:#ff1a40; font-weight:700;">⚔️ Saber Alter</span>
+        </div>
+        <div class="meta">
+          <div><span id="deviceIcon" style="font-size:1rem;">📱</span> Device: <b id="deviceText">Android</b></div>
+          <div><span id="batteryIcon" style="font-size:1rem;">🔋</span> Baterai: <b id="batteryText">100%</b></div>
+          <div><span>🕒</span> Jam: <b id="liveClockText" style="font-family:'JetBrains Mono', Consolas, monospace;">--:--:-- WIB</b></div>
+          <div><span class="pulse-dot-green"></span> Aktif: <b class="on" id="publicUptimeText" style="font-family:'JetBrains Mono', Consolas, monospace;">00j 00m 00d</b></div>
+          <div id="wifiMetaItem"><span class="status-dot"></span> WiFi: <b id="localIpText">127.0.0.1</b></div>
+        </div>
+      </div>
+    </div>
+
+        <!-- EduKids Special Feature Banner -->
+    <a href="/edukids" style="text-decoration:none; display:block; margin-bottom:1.5rem;">
+      <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2)); border: 2px solid rgba(56, 189, 248, 0.45); border-radius: 20px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.25s ease;">
+        <div style="display:flex; align-items:center; gap:0.85rem;">
+          <span style="font-size:2.2rem;">🎒</span>
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem; flex-wrap:wrap;">
+              <span style="font-weight:800; font-size:1.05rem; color:#fff;">TAMAN BELAJAR CERIA (EDUKIDS)</span>
+              <span style="background:#f59e0b; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:20px;">KHUSUS TK & SD</span>
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-secondary);">
+              Game edukasi interaktif: tebak satwa, berhitung, susun ejaan, memori & piagam bintang juara!
+            </div>
+          </div>
+        </div>
+        <div style="background:#0284c7; color:#fff; font-weight:800; font-size:0.82rem; padding:0.5rem 0.9rem; border-radius:14px; white-space:nowrap; box-shadow:0 0 15px rgba(2, 132, 199, 0.4);">
+          Main Sekarang 🚀
+        </div>
+      </div>
+    </a>
+
+    <!-- Portal Intro Tagline -->
+    <div style="margin-bottom: 1.5rem; text-align: center;">
+      <div style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem;">
+        ⚡ CYBER ARSENAL PORTAL
+      </div>
+      <div style="font-size: 0.82rem; color: var(--text-secondary);">
+        Pilih salah satu kotak tools di bawah untuk langsung masuk ke fiturnya:
+      </div>
+    </div>
+
+    <!-- ── 8 KOTAK FITUR UTAMA (VIRAL & POWERFUL) ────────────────────────────── -->
+    <div class="portal-grid">
+      <!-- Kotak 1: Video Ripper -->
+      <a href="/tool/video" class="portal-card">
+        <div class="portal-card-icon">🎬</div>
+        <div class="portal-card-title">Video Ripper</div>
+        <div class="portal-card-desc">MP4 Full HD & Musik MP3</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 2: Cloud Infiltrator -->
+      <a href="/tool/cloud" class="portal-card">
+        <div class="portal-card-icon">📥</div>
+        <div class="portal-card-title">Cloud Ripper</div>
+        <div class="portal-card-desc">Bypass MediaFire & TeraBox</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 3: Link Unmasker -->
+      <a href="/tool/bypass" class="portal-card">
+        <div class="portal-card-icon">🔗</div>
+        <div class="portal-card-title">Link Unmasker</div>
+        <div class="portal-card-desc">Bongkar Safelink & Iklan</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 4: AI Image Lab -->
+      <a href="/tool/image" class="portal-card">
+        <div class="portal-card-icon">🖼️</div>
+        <div class="portal-card-title">AI Image Lab</div>
+        <div class="portal-card-desc">Super HD 4K & Hapus BG</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 5: Brat Generator -->
+      <a href="/tool/brat" class="portal-card">
+        <div class="portal-card-icon">🟩</div>
+        <div class="portal-card-title">Brat Maker</div>
+        <div class="portal-card-desc">Stiker & Cover Teks Viral</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 6: TempMail & OTP -->
+      <a href="/tool/tempmail" class="portal-card">
+        <div class="portal-card-icon">📬</div>
+        <div class="portal-card-title">TempMail OTP</div>
+        <div class="portal-card-desc">Email Sementara & Inbox</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 7: Scan Virus -->
+      <a href="/tool/virus" class="portal-card">
+        <div class="portal-card-icon">🛡️</div>
+        <div class="portal-card-title">Scan Virus</div>
+        <div class="portal-card-desc">Pindai File & Link Bahaya</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 8: Anti-Phishing -->
+      <a href="/tool/phishing" class="portal-card">
+        <div class="portal-card-icon">🎣</div>
+        <div class="portal-card-title">Anti-Phishing</div>
+        <div class="portal-card-desc">Deteksi Link Scam & Tipuan</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 9: PDF Toolkit -->
+      <a href="/tool/pdf" class="portal-card">
+        <div class="portal-card-icon">📑</div>
+        <div class="portal-card-title">PDF Toolkit</div>
+        <div class="portal-card-desc">Kompres, Merge, & Foto PDF</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+
+      <!-- Kotak 10: WhatsApp Sticker & GIF -->
+      <a href="/tool/sticker" class="portal-card">
+        <div class="portal-card-icon">💬</div>
+        <div class="portal-card-title">Stiker WA & GIF</div>
+        <div class="portal-card-desc">Bikin Stiker WA & Looping GIF</div>
+        <div class="portal-card-action">
+          <span>Buka</span>
+          <span>➔</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- ── Settings Modal ───────────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-glass">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⚙️</span> Pengaturan & Info
+        </div>
+        <button type="button" class="modal-close" id="closeSettingsBtn">✕</button>
+      </div>
+
+      <!-- Cyber Theme Badge -->
+      <div class="setting-section">
+        <div class="setting-title">⚔️ Tema Tampilan</div>
+        <div style="background:rgba(255,26,64,0.1); border:1px solid rgba(255,26,64,0.3); border-radius:12px; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.75rem;">
+          <div style="width:14px; height:14px; border-radius:50%; background:#ff1a40; box-shadow:0 0 10px #ff1a40;"></div>
+          <div>
+            <div style="font-weight:800; font-size:0.88rem; color:#fff;">Saber Alter Crimson Red</div>
+            <div style="font-size:0.75rem; color:var(--text-secondary);">Live Video: Saber Alter vs Rider (Heaven's Feel)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cyber Security & PIN Management -->
+      <div class="setting-section">
+        <div class="setting-title">🛡️ Cyber Security & Anti-Hack Shield</div>
+        <div style="background:rgba(255,26,64,0.06); border:1px solid rgba(255,26,64,0.25); border-radius:12px; padding:0.85rem; margin-bottom:0.75rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+            <span style="font-size:0.85rem; font-weight:700; color:#fff;">Status Master PIN:</span>
+            <span style="background:#ff1a40; color:#fff; font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:6px; font-weight:800; letter-spacing:0.05em;">AKTIF (1337)</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.75rem; line-height:1.4;">
+            Sistem ini melindungi tools kamu dari bot scanning dan akses tidak sah saat online publik.
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.4rem; margin-bottom:0.5rem;">
+            <input type="password" id="oldMasterPin" class="glass-input" placeholder="PIN saat ini (default: 1337)" style="font-size:0.82rem; padding:0.45rem 0.65rem;">
+            <input type="password" id="newMasterPin" class="glass-input" placeholder="PIN baru kamu..." style="font-size:0.82rem; padding:0.45rem 0.65rem;">
+          </div>
+          <button type="button" class="btn-liquid-primary" id="savePinBtn" style="width:100%; font-size:0.82rem; padding:0.5rem; justify-content:center;">
+            💾 Simpan PIN Baru
+          </button>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.45rem; font-size:0.75rem;">
+          <div style="padding:0.45rem; background:rgba(255,255,255,0.03); border-radius:8px; border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:0.35rem;">
+            <span style="color:#10b981;">✔</span> Anti-DevTools
+          </div>
+          <div style="padding:0.45rem; background:rgba(255,255,255,0.03); border-radius:8px; border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:0.35rem;">
+            <span style="color:#10b981;">✔</span> Anti-DDoS Rate Limit
+          </div>
+          <div style="padding:0.45rem; background:rgba(255,255,255,0.03); border-radius:8px; border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:0.35rem;">
+            <span style="color:#10b981;">✔</span> SSRF Shield
+          </div>
+          <div style="padding:0.45rem; background:rgba(255,255,255,0.03); border-radius:8px; border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:0.35rem;">
+            <span style="color:#10b981;">✔</span> API Docs Hidden
+          </div>
+        </div>
+      </div>
+
+      <!-- Share with Friends -->
+      <div class="setting-section">
+        <div class="setting-title">🚀 Bagikan ke Temen (Satu WiFi / LAN)</div>
+        <div style="background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); border-radius:12px; padding:0.85rem; margin-bottom:0.75rem;">
+          <div style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.25rem;">Link Akses Jaringan Lokal:</div>
+          <div id="shareableUrl" style="font-family:monospace; font-weight:700; color:var(--primary); word-break:break-all; margin-bottom:0.6rem;">
+            http://localhost:8000
+          </div>
+          <button type="button" class="btn-liquid-secondary" id="copyShareUrlBtn" style="width:100%; font-size:0.85rem; padding:0.5rem;">
+            📋 Salin Link WiFi
+          </button>
+        </div>
+        <div style="font-size:0.75rem; color:var(--text-dim);">
+          *Temen yang konek ke WiFi / hotspot yang sama tinggal buka link di atas lewat Chrome/Safari di HP atau laptop mereka.
+        </div>
+      </div>
+
+      <!-- Creator & Contact Info -->
+      <div class="setting-section">
+        <div class="setting-title">💬 Developer & Support Kontak</div>
+        <div class="contact-grid">
+          <a href="https://wa.me/" target="_blank" class="contact-card">
+            <span style="font-size:1.3rem;">📱</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem;">WhatsApp</div>
+              <div style="font-size:0.7rem; color:var(--text-dim);">Direct Chat</div>
+            </div>
+          </a>
+          <a href="https://t.me/" target="_blank" class="contact-card">
+            <span style="font-size:1.3rem;">✈️</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem;">Telegram</div>
+              <div style="font-size:0.7rem; color:var(--text-dim);">@rilz</div>
+            </div>
+          </a>
+          <a href="https://instagram.com/" target="_blank" class="contact-card">
+            <span style="font-size:1.3rem;">📸</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem;">Instagram</div>
+              <div style="font-size:0.7rem; color:var(--text-dim);">Social Media</div>
+            </div>
+          </a>
+          <a href="https://github.com/" target="_blank" class="contact-card">
+            <span style="font-size:1.3rem;">🐙</span>
+            <div>
+              <div style="font-weight:700; font-size:0.85rem;">GitHub</div>
+              <div style="font-size:0.7rem; color:var(--text-dim);">Open Source</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Version & Specs -->
+      <div style="padding-top:1rem; border-top:1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text-dim);">
+        <span>RILZ WEB v2.1.0</span>
+        <span style="color:var(--primary);">Engine: FastAPI Python 3.15</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

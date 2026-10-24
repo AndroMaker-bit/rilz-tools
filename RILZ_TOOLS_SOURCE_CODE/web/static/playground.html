@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>⚡ RILZ NEON SANDBOX — Cyber Physics & Audio Playground</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      background: #04060a;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    /* Ambient HUD UI */
+    .hud-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem;
+    }
+
+    .hud-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .brand-glass {
+      background: rgba(13, 20, 36, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 0.85rem 1.4rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 136, 0.2);
+      pointer-events: auto;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #00ff88;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+    }
+
+    /* Control Pills */
+    .controls-glass {
+      background: rgba(13, 20, 36, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 0.75rem;
+      border-radius: 30px;
+      display: flex;
+      gap: 0.5rem;
+      pointer-events: auto;
+    }
+
+    .btn-pill {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.45rem 0.95rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-pill:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-pill.active {
+      background: rgba(0, 255, 136, 0.15);
+      border-color: #00ff88;
+      color: #00ff88;
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+    }
+
+    /* Bottom Guide Hint */
+    .hint-bar {
+      align-self: center;
+      background: rgba(13, 20, 36, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.65rem 1.4rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      pointer-events: auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .hint-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hint-key {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #00ff88;
+      font-family: monospace;
+    }
+
+    /* Hollywood Hack Alert Banner */
+    .hacker-banner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: rgba(5, 8, 15, 0.9);
+      border: 2px solid #00ff88;
+      box-shadow: 0 0 50px rgba(0, 255, 136, 0.5), inset 0 0 25px rgba(0, 255, 136, 0.2);
+      padding: 1.5rem 2.5rem;
+      border-radius: 16px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 20;
+    }
+
+    .hacker-banner.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .hacker-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #00ff88;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px #00ff88;
+      margin-bottom: 0.4rem;
+    }
+
+    .hacker-msg {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      font-family: monospace;
+    }
+
+    @media (max-width: 768px) {
+      .hud-header { flex-direction: column; gap: 0.75rem; }
+      .hint-bar { display: none; }
+      .brand-title { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Particle & Light Canvas -->
+  <canvas id="canvas"></canvas>
+
+  <!-- Interactive HUD Overlay -->
+  <div class="hud-overlay">
+    <div class="hud-header">
+      <div class="brand-glass">
+        <div class="brand-title">
+          <span>⚡</span> RILZ NEON SANDBOX
+        </div>
+        <div class="brand-sub">Fluid Particle Physics • Pentatonic Audio Synth</div>
+      </div>
+
+      <div class="controls-glass">
+        <button type="button" class="btn-pill active" data-mode="flow" id="modeFlow">
+          🌊 Flow
+        </button>
+        <button type="button" class="btn-pill" data-mode="vortex" id="modeVortex">
+          🌀 Vortex
+        </button>
+        <button type="button" class="btn-pill" data-mode="matrix" id="modeMatrix">
+          💻 Matrix
+        </button>
+        <button type="button" class="btn-pill" data-mode="fireworks" id="modeFireworks">
+          🎆 Fireworks
+        </button>
+      </div>
+    </div>
+
+    <!-- Center Flash Hacker Notification -->
+    <div class="hacker-banner" id="hackerBanner">
+      <div class="hacker-title" id="hackerTitle">⚡ BREACH SUCCESSFUL</div>
+      <div class="hacker-msg" id="hackerMsg">MAINFRAME BYPASSED // 0x7F_RILZ_GRANTED</div>
+    </div>
+
+    <!-- Bottom Simple Guide -->
+    <div class="hint-bar">
+      <div class="hint-item">
+        <span class="hint-key">Gerakin Mouse</span>
+        <span>Ciptain partikel neon & alunan melodi</span>
+      </div>
+      <div class="hint-item">
+        <span class="hint-key">Klik Layar</span>
+        <span>Ledakan partikel + Bass drop</span>
+      </div>
+      <div class="hint-item">
+        <span class="hint-key">Ketik Huruf Apa Saja</span>
+        <span>Hollywood Hacker Mode</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════════════════
+    // AUDIO ENGINE (Web Audio API - Synthesizer Bebas Kuota / Tanpa File Luar)
+    // ═══════════════════════════════════════════════════════════════════════════
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Skala Pentatonic Minor (Akord yang selalu enak didengar)
+    // Nada: A3, C4, D4, E4, G4, A4, C5, D5, E5, G5
+    const NOTES = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
+
+    function playSynthNote(pitchIndex, duration = 0.4, type = "sine") {
+      if (!audioCtx) return;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      const freq = NOTES[pitchIndex % NOTES.length];
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      // Amplop Suara Lembut (Attack & Decay)
+      gain.gain.setValueAtTime(0, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playBassImpact() {
+      if (!audioCtx) return;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.35);
+
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.35);
+    }
+
+    function playHackerBeep() {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      const freqs = [880, 1174, 1480, 1760];
+      const f = freqs[Math.floor(Math.random() * freqs.length)];
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+
+      gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.12);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // PHYSICS & PARTICLE ENGINE
+    // ═══════════════════════════════════════════════════════════════════════════
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener("resize", () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const MAX_PARTICLES = 400;
+
+    const mouse = {
+      x: width / 2,
+      y: height / 2,
+      prevX: width / 2,
+      prevY: height / 2,
+      speed: 0,
+      isDown: false,
+    };
+
+    let currentMode = "flow"; // flow, vortex, matrix, fireworks
+
+    // Neon Colors Palette
+    const PALETTE = [
+      { r: 0, g: 255, b: 136 },   // Emerald Neon
+      { r: 0, g: 240, b: 255 },   // Electric Cyan
+      { r: 192, g: 132, b: 252 }, // Neon Violet
+      { r: 255, g: 77, b: 109 },  // Crimson Blade
+      { r: 251, g: 191, b: 36 }   // Solar Gold
+    ];
+
+    class Particle {
+      constructor(x, y, vx, vy, color, size, life = 1) {
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.color = color;
+        this.size = size;
+        this.baseSize = size;
+        this.life = life;
+        this.decay = Math.random() * 0.008 + 0.004;
+        this.char = String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96)); // Katakana Matrix
+      }
+
+      update() {
+        if (currentMode === "vortex") {
+          // Vortex Gravity Pull
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+          const force = Math.min(15, 600 / (dist + 10));
+
+          // Tangential swirl + pull
+          this.vx += (dx / dist) * force * 0.05 - (dy / dist) * force * 0.12;
+          this.vy += (dy / dist) * force * 0.05 + (dx / dist) * force * 0.12;
+
+          this.vx *= 0.95;
+          this.vy *= 0.95;
+        } else if (currentMode === "matrix") {
+          // Matrix Digital Rain fall
+          this.vy += 0.15;
+          this.vx *= 0.98;
+        } else {
+          // Natural Flow
+          this.vx *= 0.98;
+          this.vy *= 0.98;
+        }
+
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life -= this.decay;
+        this.size = this.baseSize * Math.max(0, this.life);
+      }
+
+      draw() {
+        if (this.life <= 0) return;
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.life);
+
+        if (currentMode === "matrix") {
+          ctx.font = `${Math.floor(this.size * 3.5)}px monospace`;
+          ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+          ctx.fillText(this.char, this.x, this.y);
+        } else {
+          // Glowing Neon Orb
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+          ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, Math.max(0.5, this.size), 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+
+    function createSparkBurst(x, y, count = 35) {
+      playBassImpact();
+      const col = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 9 + 2;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        const size = Math.random() * 4 + 2;
+        particles.push(new Particle(x, y, vx, vy, col, size, 1.2));
+      }
+    }
+
+    let lastSoundTime = 0;
+
+    function handlePointerMove(x, y) {
+      initAudio();
+
+      const dx = x - mouse.x;
+      const dy = y - mouse.y;
+      mouse.speed = Math.sqrt(dx * dx + dy * dy);
+
+      mouse.prevX = mouse.x;
+      mouse.prevY = mouse.y;
+      mouse.x = x;
+      mouse.y = y;
+
+      // Spawn particles on movement
+      const spawnCount = Math.min(8, Math.floor(mouse.speed / 5) + 1);
+      const col = PALETTE[Math.floor((x / width) * PALETTE.length) % PALETTE.length];
+
+      for (let i = 0; i < spawnCount; i++) {
+        const spread = (Math.random() - 0.5) * 8;
+        const vx = (dx * 0.15) + spread;
+        const vy = (dy * 0.15) + spread;
+        const size = Math.random() * 3.5 + 1.5;
+        particles.push(new Particle(x + spread, y + spread, vx, vy, col, size));
+      }
+
+      // Play soft musical note linked to horizontal position
+      const now = Date.now();
+      if (mouse.speed > 8 && now - lastSoundTime > 90) {
+        const noteIdx = Math.floor((x / width) * NOTES.length);
+        playSynthNote(noteIdx, 0.4);
+        lastSoundTime = now;
+      }
+    }
+
+    // Mouse & Touch Listeners
+    window.addEventListener("mousemove", (e) => handlePointerMove(e.clientX, e.clientY));
+
+    window.addEventListener("touchmove", (e) => {
+      if (e.touches.length > 0) {
+        handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    window.addEventListener("mousedown", (e) => {
+      initAudio();
+      mouse.isDown = true;
+      createSparkBurst(e.clientX, e.clientY, 40);
+    });
+
+    window.addEventListener("touchstart", (e) => {
+      initAudio();
+      if (e.touches.length > 0) {
+        createSparkBurst(e.touches[0].clientX, e.touches[0].clientY, 40);
+      }
+    }, { passive: true });
+
+    window.addEventListener("mouseup", () => mouse.isDown = false);
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // HOLLYWOOD HACKER EASTER EGG (Ketik Huruf Apa Saja)
+    // ═══════════════════════════════════════════════════════════════════════════
+    const HACK_MSGS = [
+      { title: "⚡ ACCESS GRANTED", msg: "MAINFRAME OVERRIDDEN // ROOT_PERMISSIONS_OK" },
+      { title: "🔓 FIREWALL BYPASSED", msg: "PORT 1337 INFILTRATED // ENCRYPTION AES-512" },
+      { title: "🧬 QUANTUM SYNC", msg: "NEURAL NETWORK HARVESTED // STATUS: 100%" },
+      { title: "🛰️ SATELLITE LOCKED", msg: "COORDINATES DECRYPTED // TRACE AVOIDED" },
+      { title: "🔥 OVERCLOCK ENGAGED", msg: "CPU RUNNING AT 8.4 GHz // COOLING LIQUID" }
+    ];
+
+    const hackerBanner = document.getElementById("hackerBanner");
+    const hackerTitle = document.getElementById("hackerTitle");
+    const hackerMsg = document.getElementById("hackerMsg");
+    let bannerTimer = null;
+
+    window.addEventListener("keydown", (e) => {
+      initAudio();
+      playHackerBeep();
+
+      // Spawn sparks at center or mouse
+      createSparkBurst(mouse.x || width / 2, mouse.y || height / 2, 20);
+
+      // Random Hollywood Alert
+      const item = HACK_MSGS[Math.floor(Math.random() * HACK_MSGS.length)];
+      hackerTitle.textContent = item.title;
+      hackerMsg.textContent = item.msg;
+
+      hackerBanner.classList.add("show");
+      clearTimeout(bannerTimer);
+      bannerTimer = setTimeout(() => {
+        hackerBanner.classList.remove("show");
+      }, 1400);
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MODE SWITCHER BUTTONS
+    // ═══════════════════════════════════════════════════════════════════════════
+    document.querySelectorAll(".btn-pill").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        initAudio();
+        document.querySelectorAll(".btn-pill").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentMode = btn.dataset.mode;
+        playSynthNote(7, 0.5, "triangle");
+
+        if (currentMode === "fireworks") {
+          // Launch automatic fireworks display
+          for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+              createSparkBurst(
+                Math.random() * (width - 200) + 100,
+                Math.random() * (height - 200) + 100,
+                50
+              );
+            }, i * 250);
+          }
+        }
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ANIMATION RENDER LOOP (Fluid Motion Blur)
+    // ═══════════════════════════════════════════════════════════════════════════
+    function render() {
+      // Trail fade effect (Motion Blur)
+      ctx.fillStyle = "rgba(4, 6, 10, 0.22)";
+      ctx.fillRect(0, 0, width, height);
+
+      // Connect nearby particles with subtle neon electric webs
+      if (currentMode === "flow" && particles.length < 180) {
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 65) {
+              ctx.strokeStyle = `rgba(${particles[i].color.r}, ${particles[i].color.g}, ${particles[i].color.b}, ${(1 - dist / 65) * 0.25})`;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // Update and draw particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.update();
+        p.draw();
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+
+      // Keep particle count capped
+      if (particles.length > MAX_PARTICLES) {
+        particles.splice(0, particles.length - MAX_PARTICLES);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    // Initial ambient burst on load
+    window.addEventListener("load", () => {
+      createSparkBurst(width / 2, height / 2, 45);
+    });
+
+    render();
+  </script>
+</body>
+</html>

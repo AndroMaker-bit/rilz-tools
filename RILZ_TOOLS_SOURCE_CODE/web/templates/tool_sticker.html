@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Sticker & GIF Maker — RILZ WEB</title>
+  <link rel="stylesheet" href="/static/css/liquid-glass.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
+  <style>
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      .mode-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .mode-btn {
+      padding: 0.85rem 0.5rem;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-align: center;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .mode-btn.active {
+      border-color: #ff1a40;
+      background: rgba(255, 26, 64, 0.15);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255, 26, 64, 0.3);
+    }
+    .dropzone-box {
+      border: 2px dashed rgba(255, 26, 64, 0.35);
+      border-radius: 16px;
+      padding: 2.25rem 1.5rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-bottom: 1.25rem;
+    }
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: #ff1a40;
+      background: rgba(255, 26, 64, 0.08);
+      box-shadow: 0 0 20px rgba(255, 26, 64, 0.2);
+    }
+    .preview-box {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 1.25rem;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .preview-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Saber Alter Background Video -->
+  <div class="bg-video-container">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/static/media/saber_alter_vs_rider.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
+  <div class="app-wrapper">
+
+            <!-- Top Header Bar -->
+    <header class="header-glass">
+      <div class="brand-container">
+        <a href="/" style="text-decoration:none;" class="brand-icon">⚡</a>
+        <div>
+          <a href="/" style="text-decoration:none;"><div class="brand-title">RILZ WEB</div></a>
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:#ff1a40; font-weight:700;">⚔️ Saber Alter Edition</span>
+            <span class="brand-badge">v2.1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="/static/playground.html" target="_blank" class="btn-icon-glass" style="text-decoration:none;" title="Buka Cyber Neon Sandbox Playground">🎮</a>
+        <button type="button" class="btn-icon-glass" id="openSettingsBtn" title="Pengaturan & Kontak">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Telemetry Profile Card (All-Tools Lutfizzx Layout) -->
+    <div class="prof">
+      <div class="av" title="Saber Alter Avatar">⚡</div>
+      <div class="pi">
+        <div class="pn">
+          <span>RILZ ARSENAL</span>
+          <span class="vip">ONLINE 24/7</span>
+          <span style="font-size:0.75rem; color:#ff1a40; font-weight:700;">⚔️ Saber Alter</span>
+        </div>
+        <div class="meta">
+          <div><span id="deviceIcon" style="font-size:1rem;">📱</span> Device: <b id="deviceText">Android</b></div>
+          <div><span id="batteryIcon" style="font-size:1rem;">🔋</span> Baterai: <b id="batteryText">100%</b></div>
+          <div><span>🕒</span> Jam: <b id="liveClockText" style="font-family:'JetBrains Mono', Consolas, monospace;">--:--:-- WIB</b></div>
+          <div><span class="pulse-dot-green"></span> Aktif: <b class="on" id="publicUptimeText" style="font-family:'JetBrains Mono', Consolas, monospace;">00j 00m 00d</b></div>
+          <div id="wifiMetaItem"><span class="status-dot"></span> WiFi: <b id="localIpText">127.0.0.1</b></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="/" class="btn-back-nav">
+      <span>⬅️</span> Kembali ke Menu Kotak
+    </a>
+
+    <div class="liquid-card">
+      <div class="card-title-group">
+        <div class="badge-safelink" style="border-color:rgba(255,26,64,0.4); color:#ff1a40;">
+          <span>💬</span> Media Converter Engine
+        </div>
+        <div class="card-title"><span>💬</span> WhatsApp Sticker & GIF Maker</div>
+        <div class="card-subtitle">Ubah klip video atau meme favorit lo jadi Stiker WhatsApp bergerak (.webp resmi &lt; 500KB), GIF animasi looping jernih, atau stiker foto instan.</div>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="mode-grid">
+        <button type="button" class="mode-btn active" data-mode="wa_animated">
+          <span style="font-size:1.6rem;">✨</span>
+          <span>Stiker WA Bergerak</span>
+          <span style="font-size:0.7rem; color:var(--text-dim);">Format WebP resmi</span>
+        </button>
+        <button type="button" class="mode-btn" data-mode="gif">
+          <span style="font-size:1.6rem;">🎬</span>
+          <span>Video ke GIF</span>
+          <span style="font-size:0.7rem; color:var(--text-dim);">Looping lancar 15fps</span>
+        </button>
+        <button type="button" class="mode-btn" data-mode="wa_static">
+          <span style="font-size:1.6rem;">🖼️</span>
+          <span>Foto ke Stiker WA</span>
+          <span style="font-size:0.7rem; color:var(--text-dim);">WebP 512x512 transparan</span>
+        </button>
+      </div>
+
+      <form id="stickerForm">
+        <div class="dropzone-box" id="dropzoneSticker">
+          <div style="font-size:2.8rem; margin-bottom:0.5rem;" id="dropzoneIcon">🎬</div>
+          <div style="font-weight:700; font-size:1rem; color:#fff;" id="dropzoneLabel">Pilih Video atau GIF yang Mau Diubah</div>
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.35rem;" id="dropzoneSubLabel">Format: MP4, WebM, MOV, AVI, GIF, atau PNG/JPG</div>
+          <input type="file" id="mediaInput" accept="video/*,image/*" style="display:none;" required>
+        </div>
+
+        <!-- Duration Setting (Only for Video/Animated) -->
+        <div id="durationSetting" style="margin-bottom:1.5rem; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); border-radius:12px; padding:0.85rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <label class="input-label" style="margin-bottom:0;">Durasi Maksimal Stiker:</label>
+            <span id="durationVal" style="font-weight:800; color:#ff1a40;">5.0 Detik</span>
+          </div>
+          <input type="range" id="durationRange" min="1" max="6" step="0.5" value="5.0" style="width:100%; accent-color:#ff1a40;">
+          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:0.35rem;">
+            *WhatsApp membatasi stiker bergerak maksimal 6 detik dan ukuran di bawah 500 KB.
+          </div>
+        </div>
+
+        <button type="submit" class="btn-liquid-primary" id="btnStickerSubmit">
+          <span>⚡</span> Konversi Stiker Sekarang
+        </button>
+      </form>
+
+      <!-- Result Area -->
+      <div class="result-box" id="resultSticker"></div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-glass">
+      <div class="modal-header">
+        <div class="modal-title"><span>⚙️</span> Pengaturan & Info</div>
+        <button type="button" class="modal-close" id="closeSettingsBtn">✕</button>
+      </div>
+      <div class="setting-section">
+        <div class="setting-title">⚔️ Tema Tampilan</div>
+        <div style="background:rgba(255,26,64,0.1); border:1px solid rgba(255,26,64,0.3); border-radius:12px; padding:0.75rem 1rem; display:flex; align-items:center; gap:0.75rem;">
+          <div style="width:14px; height:14px; border-radius:50%; background:#ff1a40; box-shadow:0 0 10px #ff1a40;"></div>
+          <div>
+            <div style="font-weight:800; font-size:0.88rem; color:#fff;">Saber Alter Crimson Red</div>
+            <div style="font-size:0.75rem; color:var(--text-secondary);">Live Video: Saber Alter vs Rider (Heaven's Feel)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

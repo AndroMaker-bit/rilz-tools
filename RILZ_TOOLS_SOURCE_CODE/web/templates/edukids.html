@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Taman Belajar Ceria — EduKids 32 Game (TK & SD)</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎒</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-sky: #60a5fa;
+      --bg-grass: #34d399;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --yellow: #fbbf24;
+      --orange: #f97316;
+      --pink: #f43f5e;
+      --purple: #8b5cf6;
+      --blue: #0284c7;
+      --green: #10b981;
+      --font-fun: 'Fredoka', cursive, sans-serif;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(180deg, #38bdf8 0%, #818cf8 45%, #34d399 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+      padding-bottom: 3rem;
+    }
+
+    /* Floating Sky Clouds */
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 50px;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatCloud 25s linear infinite;
+    }
+    .cloud-1 { width: 120px; height: 45px; top: 25px; left: -140px; animation-duration: 30s; }
+    .cloud-2 { width: 180px; height: 60px; top: 110px; left: -200px; animation-duration: 40s; animation-delay: 10s; }
+    .cloud-3 { width: 100px; height: 35px; top: 180px; left: -120px; animation-duration: 22s; animation-delay: 5s; }
+
+    @keyframes floatCloud {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(100vw + 250px)); }
+    }
+
+    /* Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Container */
+    .edu-container {
+      width: 100%;
+      max-width: 820px;
+      padding: 1rem;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Header Nav */
+    .edu-header {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 0.85rem 1.25rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 0 #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .brand-logo {
+      font-size: 2.2rem;
+      animation: bounceLogo 2s infinite ease-in-out;
+    }
+
+    @keyframes bounceLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .brand-title {
+      font-family: var(--font-fun);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #0369a1;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #059669;
+    }
+
+    .header-btns {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .btn-fun-icon {
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      border-radius: 18px;
+      width: 42px;
+      height: 42px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #cbd5e1;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .btn-fun-icon:active {
+      transform: translateY(3px);
+      box-shadow: none;
+    }
+
+    /* Score Board */
+    .star-score-pill {
+      background: #fef08a;
+      border: 2px solid #facc15;
+      color: #854d0e;
+      font-family: var(--font-fun);
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 3px 0 #eab308;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    /* Search Bar */
+    .search-box-bar {
+      width: 100%;
+      background: #ffffff;
+      border: 3px solid #cbd5e1;
+      border-radius: 20px;
+      padding: 0.65rem 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #0f172a;
+      background: transparent;
+    }
+
+    .search-input::placeholder {
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    /* Level Selector Tabs */
+    .level-tab-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .tab-btn {
+      font-family: var(--font-fun);
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      border-radius: 22px;
+      border: 3px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.12);
+      text-align: center;
+    }
+
+    .tab-btn.tab-tk {
+      background: #fbcfe8;
+      color: #9d174d;
+      border-color: #f472b6;
+      box-shadow: 0 6px 0 #db2777;
+    }
+
+    .tab-btn.tab-sd {
+      background: #c7d2fe;
+      color: #3730a3;
+      border-color: #818cf8;
+      box-shadow: 0 6px 0 #4f46e5;
+    }
+
+    .tab-btn.active {
+      transform: scale(1.02);
+      filter: brightness(1.05);
+      border-width: 4px;
+    }
+
+    .tab-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    /* 32 Game Menu Grid (2 col on mobile, 3 col on tablet/desktop) */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 640px) {
+      .menu-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 1.15rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      border: 3px solid #e2e8f0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 5px 0 #cbd5e1;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: var(--blue);
+      box-shadow: 0 12px 25px rgba(2, 132, 199, 0.25), 0 6px 0 #0284c7;
+    }
+
+    .game-card:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #cbd5e1;
+    }
+
+    .game-icon-bubble {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 2.1rem;
+      margin-bottom: 0.5rem;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      animation: wiggle 3s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    .game-title {
+      font-family: var(--font-fun);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.2rem;
+      line-height: 1.25;
+    }
+
+    .game-desc {
+      font-size: 0.74rem;
+      color: #64748b;
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .badge-level {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      color: #fff;
+      display: inline-block;
+      margin-top: auto;
+    }
+
+    /* Active Game Play Area */
+    .game-stage-card {
+      background: var(--card-bg);
+      border-radius: 30px;
+      padding: 1.5rem 1.25rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 6px 0 #cbd5e1;
+      border: 3px solid #e2e8f0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.92) translateY(15px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .stage-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px dashed #e2e8f0;
+      gap: 0.5rem;
+    }
+
+    .btn-back-stage {
+      background: #fee2e2;
+      border: 2px solid #fca5a5;
+      color: #b91c1c;
+      padding: 0.4rem 0.85rem;
+      border-radius: 16px;
+      font-family: var(--font-fun);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 3px 0 #ef4444;
+      white-space: nowrap;
+    }
+
+    .btn-back-stage:active {
+      transform: translateY(3px);
+      box-shadow: none;
+    }
+
+    .stage-question-box {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 1.25rem 1rem;
+      width: 100%;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .stage-question-text {
+      font-family: var(--font-fun);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .stage-sub-prompt {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .question-big-visual {
+      font-size: 4.5rem;
+      margin: 0.75rem 0;
+      animation: pulseBig 1.5s infinite alternate ease-in-out;
+      display: inline-block;
+    }
+
+    @keyframes pulseBig {
+      from { transform: scale(1); }
+      to { transform: scale(1.08); }
+    }
+
+    /* Option Cards Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .opt-card {
+      background: #ffffff;
+      border: 3px solid #cbd5e1;
+      border-radius: 22px;
+      padding: 1.15rem 0.75rem;
+      font-family: var(--font-fun);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 6px 0 #94a3b8;
+      transition: all 0.15s ease;
+    }
+
+    .opt-card:hover {
+      border-color: #38bdf8;
+      background: #f0f9ff;
+    }
+
+    .opt-card:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #94a3b8;
+    }
+
+    .opt-card.correct {
+      background: #dcfce7 !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+      box-shadow: 0 6px 0 #16a34a !important;
+      animation: cheerSuccess 0.4s ease;
+    }
+
+    .opt-card.wrong {
+      background: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #b91c1c !important;
+      box-shadow: 0 6px 0 #dc2626 !important;
+      animation: shakeWrong 0.3s ease;
+    }
+
+    @keyframes cheerSuccess {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shakeWrong {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    /* Feedback Banner */
+    .feedback-banner {
+      width: 100%;
+      border-radius: 20px;
+      padding: 0.85rem;
+      font-family: var(--font-fun);
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      animation: popIn 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    .feedback-banner.success {
+      background: #dcfce7;
+      color: #15803d;
+      border: 2px solid #86efac;
+    }
+
+    .feedback-banner.fail {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 2px solid #fca5a5;
+    }
+
+    /* Next Question Button */
+    .btn-next-action {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: none;
+      font-family: var(--font-fun);
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #047857;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn-next-action:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #047857;
+    }
+
+    /* Word Building Tiles */
+    .word-slots {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .slot-box {
+      width: 48px;
+      height: 54px;
+      border: 3px dashed #94a3b8;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-fun);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0f172a;
+      background: #f8fafc;
+    }
+
+    .slot-box.filled {
+      border-style: solid;
+      border-color: #38bdf8;
+      background: #e0f2fe;
+      box-shadow: 0 4px 0 #0284c7;
+    }
+
+    .letter-tiles {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .letter-btn {
+      width: 50px;
+      height: 54px;
+      background: #fef08a;
+      border: 2px solid #facc15;
+      border-radius: 14px;
+      font-family: var(--font-fun);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #713f12;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 5px 0 #ca8a04;
+      transition: all 0.15s ease;
+    }
+
+    .letter-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #ca8a04;
+    }
+
+    .letter-btn.used {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    /* Memory Match Grid */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .mem-card {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+      border: 3px solid #7c3aed;
+      border-radius: 18px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      box-shadow: 0 5px 0 #6d28d9;
+      transition: all 0.25s ease;
+    }
+
+    .mem-card.flipped {
+      background: #ffffff;
+      border-color: #38bdf8;
+      box-shadow: 0 5px 0 #0284c7;
+      transform: rotateY(180deg);
+    }
+
+    .mem-card.matched {
+      background: #dcfce7;
+      border-color: #22c55e;
+      box-shadow: 0 5px 0 #16a34a;
+      pointer-events: none;
+    }
+
+    /* ── Drawing & Coloring Studio ────────────────────────────────────────── */
+    #drawingStudio {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .drawing-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      width: 100%;
+    }
+
+    .color-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .color-dot:hover, .color-dot.active {
+      transform: scale(1.25);
+      border-color: #0f172a;
+    }
+
+    #drawingCanvasArea {
+      width: 100%;
+      background: #ffffff;
+      border: 4px solid #38bdf8;
+      border-radius: 20px;
+      touch-action: none;
+      cursor: crosshair;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .stamp-btn {
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 0.25rem 0.6rem;
+      font-size: 1.15rem;
+      cursor: pointer;
+      font-family: var(--font-fun);
+    }
+
+    /* Teacher's Certificate Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .cert-card {
+      background: #ffffff;
+      border: 8px solid #facc15;
+      border-radius: 28px;
+      padding: 1.75rem 1.25rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .cert-title {
+      font-family: var(--font-fun);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #b45309;
+      margin-bottom: 0.25rem;
+    }
+
+    .cert-input-name {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 16px;
+      border: 2px solid #cbd5e1;
+      font-family: var(--font-fun);
+      font-size: 1.15rem;
+      text-align: center;
+      margin: 1rem 0;
+      color: #0f172a;
+    }
+
+    .btn-cert-save {
+      background: #10b981;
+      color: #fff;
+      font-family: var(--font-fun);
+      font-size: 1.1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 5px 0 #059669;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Sky Clouds -->
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="edu-container">
+
+    <!-- Top Header Navigation -->
+    <header class="edu-header">
+      <div class="brand-group">
+        <div class="brand-logo">🎒</div>
+        <div>
+          <div class="brand-title">TAMAN BELAJAR CERIA</div>
+          <div class="brand-subtitle">🌟 EduKids: 32 Game Edukasi Interaktif (16 TK & 16 SD)</div>
+        </div>
+      </div>
+
+      <div class="header-btns">
+        <div class="star-score-pill" title="Total Bintang Juara">
+          <span>⭐</span>
+          <span id="globalStars">0</span>
+        </div>
+
+        <button type="button" class="btn-fun-icon sound-toggle-btn" id="soundToggleBtn" title="Suara Game On/Off">
+          🔊
+        </button>
+
+        <a href="/" class="btn-fun-icon" title="Kembali ke RILZ Portal">
+          🏠
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Menu Area -->
+    <main id="mainMenuView" style="display:flex; flex-direction:column; gap:1rem;">
+
+      <!-- Search Game Bar -->
+      <div class="search-box-bar">
+        <span style="font-size:1.2rem;">🔍</span>
+        <input type="text" id="gameSearchInput" class="search-input" placeholder="Cari game (contoh: hewan, uang, planet, ejaan, buah, jam)..." oninput="filterGames(this.value)">
+      </div>
+
+      <!-- Level Category Tabs -->
+      <div class="level-tab-box">
+        <button type="button" class="tab-btn tab-tk active" id="tabTkBtn">
+          <span>🧸</span> Level PAUD & TK (16 Game)
+        </button>
+        <button type="button" class="tab-btn tab-sd" id="tabSdBtn">
+          <span>🎓</span> Level SD Kelas 1-3 (16 Game)
+        </button>
+      </div>
+
+      <!-- ── Category TK Games (16 Games) ─────────────────────────────────── -->
+      <div id="gridTkGames" class="menu-grid">
+        <!-- 1: Hewan -->
+        <div class="game-card" data-tags="hewan binatang suara satwa" onclick="startPlayGame('animals')">
+          <div class="game-icon-bubble" style="background:#fed7aa; color:#ea580c;">🦁</div>
+          <div class="game-title">1. Sahabat Satwa</div>
+          <div class="game-desc">Tebak gambar hewan & dengarkan bunyinya yang lucu!</div>
+          <span class="badge-level" style="background:#f97316;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 2: Buah & Warna -->
+        <div class="game-card" data-tags="buah warna sayur makanan" onclick="startPlayGame('fruits')">
+          <div class="game-icon-bubble" style="background:#bbf7d0; color:#16a34a;">🍎</div>
+          <div class="game-title">2. Buah & Warna</div>
+          <div class="game-desc">Mencocokkan buah lezat & aneka warna pelangi.</div>
+          <span class="badge-level" style="background:#16a34a;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 3: Hitung Benda Visual -->
+        <div class="game-card" data-tags="hitung angka donat permen matematika" onclick="startPlayGame('counting')">
+          <div class="game-icon-bubble" style="background:#fef08a; color:#ca8a04;">🍩</div>
+          <div class="game-title">3. Hitung Ceria 1-10</div>
+          <div class="game-desc">Menghitung donat, permen & bintang dengan gembira.</div>
+          <span class="badge-level" style="background:#eab308;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 4: Kartu Memori -->
+        <div class="game-card" data-tags="memori kartu kembar pasangan tebak" onclick="startPlayGame('memory')">
+          <div class="game-icon-bubble" style="background:#ddd6fe; color:#7c3aed;">🎴</div>
+          <div class="game-title">4. Memori Kembar</div>
+          <div class="game-desc">Mencari pasangan kartu yang kembar. Asah daya ingat!</div>
+          <span class="badge-level" style="background:#8b5cf6;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 5: Kanvas Gambar & Mewarnai Ajaib -->
+        <div class="game-card" data-tags="gambar lukis warna mewarnai kuas stiker kanvas" onclick="startDrawingStudio()">
+          <div class="game-icon-bubble" style="background:#fbcfe8; color:#db2777;">🎨</div>
+          <div class="game-title">5. Kanvas Mewarnai</div>
+          <div class="game-desc">Papan gambar ajaib kuas pelangi & simpan gambarmu!</div>
+          <span class="badge-level" style="background:#ec4899;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 6: Taman Huruf Abjad -->
+        <div class="game-card" data-tags="huruf abjad alfabet ejaan a b c" onclick="startPlayGame('alphabet')">
+          <div class="game-icon-bubble" style="background:#bae6fd; color:#0284c7;">🅰️</div>
+          <div class="game-title">6. Taman Abjad A-Z</div>
+          <div class="game-desc">Mengenal huruf abjad dan kata awalan ceria.</div>
+          <span class="badge-level" style="background:#0284c7;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 7: Bentuk Geometri Ceria -->
+        <div class="game-card" data-tags="bentuk geometri segitiga lingkaran kotak persegi" onclick="startPlayGame('shapes')">
+          <div class="game-icon-bubble" style="background:#fde047; color:#a16207;">🔺</div>
+          <div class="game-title">7. Bentuk Geometri</div>
+          <div class="game-desc">Belajar segitiga, lingkaran, bintang & persegi!</div>
+          <span class="badge-level" style="background:#ca8a04;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 8: Kendaraan & Transportasi -->
+        <div class="game-card" data-tags="kendaraan mobil motor pesawat kereta kapal transportasi" onclick="startPlayGame('transport')">
+          <div class="game-icon-bubble" style="background:#e2e8f0; color:#334155;">🚗</div>
+          <div class="game-title">8. Sahabat Kendaraan</div>
+          <div class="game-desc">Mengenal mobil, pesawat, kapal laut & kereta api.</div>
+          <span class="badge-level" style="background:#475569;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 9: Panca Indra & Tubuh -->
+        <div class="game-card" data-tags="indra mata telinga hidung tangan lidah tubuh" onclick="startPlayGame('senses')">
+          <div class="game-icon-bubble" style="background:#ffe4e6; color:#e11d48;">👁️</div>
+          <div class="game-title">9. Panca Indra & Tubuh</div>
+          <div class="game-desc">Mengenal mata melihat, telinga mendengar & hidung!</div>
+          <span class="badge-level" style="background:#e11d48;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 10: Cuaca & Musim -->
+        <div class="game-card" data-tags="cuaca hujan panas pelangi awan petir musim" onclick="startPlayGame('weather')">
+          <div class="game-icon-bubble" style="background:#cffafe; color:#0891b2;">🌦️</div>
+          <div class="game-title">10. Cuaca & Langit</div>
+          <div class="game-desc">Belajar cuaca hujan, panas terik, awan & pelangi indah.</div>
+          <span class="badge-level" style="background:#0891b2;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 11: Pakaian & Baju -->
+        <div class="game-card" data-tags="baju celana seragam topi sepatu pakaian busana" onclick="startPlayGame('clothes')">
+          <div class="game-icon-bubble" style="background:#f3e8ff; color:#9333ea;">👗</div>
+          <div class="game-title">11. Baju & Pakaian</div>
+          <div class="game-desc">Mengenal baju seragam sekolah, topi, sepatu & jaket.</div>
+          <span class="badge-level" style="background:#9333ea;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 12: Sayuran Sehat -->
+        <div class="game-card" data-tags="sayur sayuran bayam wortel brokoli tomat sehat" onclick="startPlayGame('veggies')">
+          <div class="game-icon-bubble" style="background:#dcfce7; color:#15803d;">🥦</div>
+          <div class="game-title">12. Sayuran Sehat</div>
+          <div class="game-desc">Mengenal wortel si sehat, bayam kuat & brokoli segar.</div>
+          <span class="badge-level" style="background:#15803d;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 13: Alat Musik Ceria -->
+        <div class="game-card" data-tags="musik piano gitar drum terompet biola nada lagu" onclick="startPlayGame('music')">
+          <div class="game-icon-bubble" style="background:#fef3c7; color:#d97706;">🎵</div>
+          <div class="game-title">13. Alat Musik Ceria</div>
+          <div class="game-desc">Mengenal piano, gitar, drum, terompet & biola merdu.</div>
+          <span class="badge-level" style="background:#d97706;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 14: Hidup Bersih & Sehat -->
+        <div class="game-card" data-tags="bersih mandi sikat gigi cuci tangan sampah rapi sehat" onclick="startPlayGame('hygiene')">
+          <div class="game-icon-bubble" style="background:#e0e7ff; color:#4338ca;">🪥</div>
+          <div class="game-title">14. Hidup Bersih Ceria</div>
+          <div class="game-desc">Kebiasaan sikat gigi, cuci tangan sabun & buang sampah.</div>
+          <span class="badge-level" style="background:#4338ca;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 15: Keluargaku Tercinta -->
+        <div class="game-card" data-tags="keluarga ayah ibu kakek nenek kakak adik rumah" onclick="startPlayGame('family')">
+          <div class="game-icon-bubble" style="background:#fce7f3; color:#be185d;">👨‍👩‍👧</div>
+          <div class="game-title">15. Keluargaku Sayang</div>
+          <div class="game-desc">Mengenal peran ayah, ibu, kakek, nenek & adik tersayang.</div>
+          <span class="badge-level" style="background:#be185d;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+
+        <!-- 16: Campur Warna Ajaib -->
+        <div class="game-card" data-tags="campur warna merah kuning biru hijau oranye pelangi" onclick="startPlayGame('color_mix')">
+          <div class="game-icon-bubble" style="background:#fed7aa; color:#c2410c;">🌈</div>
+          <div class="game-title">16. Sulap Campur Warna</div>
+          <div class="game-desc">Merah campur kuning jadi apa ya? Eksperimen warna!</div>
+          <span class="badge-level" style="background:#c2410c;">🧸 TK Usia 4-6 Thn</span>
+        </div>
+      </div>
+
+      <!-- ── Category SD Games (16 Games) ─────────────────────────────────── -->
+      <div id="gridSdGames" class="menu-grid" style="display:none;">
+        <!-- 17: Matematika Cepat -->
+        <div class="game-card" data-tags="matematika tambah kurang hitung angka soal" onclick="startPlayGame('math')">
+          <div class="game-icon-bubble" style="background:#bfdbfe; color:#2563eb;">➕</div>
+          <div class="game-title">1. Matematika Juara</div>
+          <div class="game-desc">Tantangan hitung tambah & kurang kilat bintang 3!</div>
+          <span class="badge-level" style="background:#2563eb;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 18: Perkalian Ceria -->
+        <div class="game-card" data-tags="kali perkalian matematika hitung cepat tabel" onclick="startPlayGame('multiply')">
+          <div class="game-icon-bubble" style="background:#ddd6fe; color:#6d28d9;">✖️</div>
+          <div class="game-title">2. Perkalian Ceria</div>
+          <div class="game-desc">Menghafal perkalian ceria 1 sampai 10 dengan cepat!</div>
+          <span class="badge-level" style="background:#6d28d9;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 19: Balok Ejaan Kata -->
+        <div class="game-card" data-tags="susun kata ejaan huruf bahasa indonesia balok" onclick="startPlayGame('spelling')">
+          <div class="game-icon-bubble" style="background:#fbcfe8; color:#db2777;">🔤</div>
+          <div class="game-title">3. Susun Ejaan Kata</div>
+          <div class="game-desc">Menyusun balok huruf acak menjadi kata utuh.</div>
+          <span class="badge-level" style="background:#db2777;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 20: Kuis Cerdas Cermat -->
+        <div class="game-card" data-tags="cerdas cermat sains ipa ips kuis tebak pengetahuan" onclick="startPlayGame('quiz')">
+          <div class="game-icon-bubble" style="background:#cffafe; color:#0891b2;">🧠</div>
+          <div class="game-title">4. Cerdas Cermat Ceria</div>
+          <div class="game-desc">Tebak-tebakan sains, alam & pengetahuan umum.</div>
+          <span class="badge-level" style="background:#0891b2;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 21: Teka-Teki Jam Waktu -->
+        <div class="game-card" data-tags="jam waktu menit detik jadwal jam dinding" onclick="startPlayGame('clock')">
+          <div class="game-icon-bubble" style="background:#fef3c7; color:#d97706;">🕒</div>
+          <div class="game-title">5. Membaca Jam Waktu</div>
+          <div class="game-desc">Belajar membaca jarum jam dinding & jadwal harian.</div>
+          <span class="badge-level" style="background:#d97706;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 22: Belajar Uang Rupiah di Kantin -->
+        <div class="game-card" data-tags="uang rupiah jajan kantin belanja kembalian koin" onclick="startPlayGame('money')">
+          <div class="game-icon-bubble" style="background:#dcfce7; color:#15803d;">💰</div>
+          <div class="game-title">6. Kantin Pintar (Uang)</div>
+          <div class="game-desc">Mengenal pecahan uang rupiah & hitung kembalian jajan!</div>
+          <span class="badge-level" style="background:#16a34a;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 23: Tata Surya & Planet -->
+        <div class="game-card" data-tags="planet tata surya bumi matahari bulan luar angkasa astronomi" onclick="startPlayGame('space')">
+          <div class="game-icon-bubble" style="background:#ede9fe; color:#6d28d9;">🪐</div>
+          <div class="game-title">7. Petualangan Planet</div>
+          <div class="game-desc">Menjelajah bumi, matahari, bulan & tata surya.</div>
+          <span class="badge-level" style="background:#7c3aed;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 24: Pahlawan & Nusantara -->
+        <div class="game-card" data-tags="nusantara pahlawan indonesia kartini adat budaya garuda" onclick="startPlayGame('heroes')">
+          <div class="game-icon-bubble" style="background:#fee2e2; color:#b91c1c;">🇮🇩</div>
+          <div class="game-title">8. Nusantara Juara</div>
+          <div class="game-desc">Mengenal pahlawan bangsa, rumah adat & budaya!</div>
+          <span class="badge-level" style="background:#dc2626;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 25: Timbangan & Perbandingan -->
+        <div class="game-card" data-tags="berat timbangan perbandingan panjang besar kecil" onclick="startPlayGame('compare')">
+          <div class="game-icon-bubble" style="background:#ccfbf1; color:#0d9488;">⚖️</div>
+          <div class="game-title">9. Besar vs Kecil</div>
+          <div class="game-desc">Membandingkan berat, ukuran & tinggi benda!</div>
+          <span class="badge-level" style="background:#0d9488;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 26: Makanan Hewan (Herbivora/Karnivora) -->
+        <div class="game-card" data-tags="herbivora karnivora omnivora makanan hewan biologi ipa" onclick="startPlayGame('animal_diet')">
+          <div class="game-icon-bubble" style="background:#ffedd5; color:#ea580c;">🥩</div>
+          <div class="game-title">10. Pemakan Tumbuhan & Daging</div>
+          <div class="game-desc">Mengenal hewan herbivora, karnivora & omnivora!</div>
+          <span class="badge-level" style="background:#ea580c;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 27: Bagian Tumbuhan & Alam -->
+        <div class="game-card" data-tags="akar batang daun bunga buah pohon tumbuhan biologi" onclick="startPlayGame('plants')">
+          <div class="game-icon-bubble" style="background:#d1fae5; color:#059669;">🌿</div>
+          <div class="game-title">11. Sahabat Tumbuhan</div>
+          <div class="game-desc">Belajar fungsi akar, batang, daun, bunga & buah.</div>
+          <span class="badge-level" style="background:#059669;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 28: Peta Pulau Indonesia -->
+        <div class="game-card" data-tags="pulau peta jawa sumatera kalimantan sulawesi papua ips" onclick="startPlayGame('islands')">
+          <div class="game-icon-bubble" style="background:#e0f2fe; color:#0369a1;">🗺️</div>
+          <div class="game-title">12. Peta Pulau Zamrud</div>
+          <div class="game-desc">Mengenal 5 pulau besar di Indonesia yang megah!</div>
+          <span class="badge-level" style="background:#0369a1;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 29: Hemat Energi & Lingkungan -->
+        <div class="game-card" data-tags="hemat energi listrik air lingkungan lampu matahari ipa" onclick="startPlayGame('energy')">
+          <div class="game-icon-bubble" style="background:#fef9c3; color:#ca8a04;">💡</div>
+          <div class="game-title">13. Pahlawan Hemat Energi</div>
+          <div class="game-desc">Belajar hemat listrik, tutup keran air & jaga bumi!</div>
+          <span class="badge-level" style="background:#ca8a04;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 30: Lawan Kata (Antonim Ceria) -->
+        <div class="game-card" data-tags="lawan kata antonim bahasa indonesia besar kecil cepat lambat" onclick="startPlayGame('antonyms')">
+          <div class="game-icon-bubble" style="background:#fce7f3; color:#be185d;">📚</div>
+          <div class="game-title">14. Lawan Kata Pintar</div>
+          <div class="game-desc">Tinggi lawan pendek, cepat lawan lambat. Kosakata seru!</div>
+          <span class="badge-level" style="background:#be185d;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 31: Nilai Pancasila Juara -->
+        <div class="game-card" data-tags="pancasila sila ppkn lambang bintang rantai beringin banteng padi" onclick="startPlayGame('pancasila')">
+          <div class="game-icon-bubble" style="background:#fee2e2; color:#b91c1c;">📜</div>
+          <div class="game-title">15. Bintang Pancasila</div>
+          <div class="game-desc">Mengenal 5 simbol sila Pancasila & makna kebaikan.</div>
+          <span class="badge-level" style="background:#dc2626;">🎓 SD Kelas 1-3</span>
+        </div>
+
+        <!-- 32: Teka-Teki Logika Cilik -->
+        <div class="game-card" data-tags="teka-teki tebakan logika asah otak misteri riddle" onclick="startPlayGame('riddles')">
+          <div class="game-icon-bubble" style="background:#e0e7ff; color:#4f46e5;">🧩</div>
+          <div class="game-title">16. Teka-Teki Asah Otak</div>
+          <div class="game-desc">Tebak-tebakan logika cerdik yang bikin berpikir kritis!</div>
+          <span class="badge-level" style="background:#4f46e5;">🎓 SD Kelas 1-3</span>
+        </div>
+      </div>
+
+      <!-- Teacher's Special Reward Banner -->
+      <div style="background:#ffffff; border:3px solid #facc15; border-radius:24px; padding:1rem 1.25rem; display:flex; justify-content:space-between; align-items:center; box-shadow:0 6px 0 #ca8a04;">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="font-size:2rem;">📜</span>
+          <div>
+            <div style="font-family:var(--font-fun); font-size:1.1rem; font-weight:700; color:#854d0e;">Piagam Bintang Juara</div>
+            <div style="font-size:0.75rem; color:#a16207; font-weight:700;">Buat piagam penghargaan atas nama murid untuk diprint/dishare!</div>
+          </div>
+        </div>
+        <button type="button" onclick="openCertificateModal()" style="background:#f59e0b; color:#fff; font-family:var(--font-fun); font-weight:700; font-size:0.9rem; border:none; border-radius:16px; padding:0.5rem 1rem; cursor:pointer; box-shadow:0 3px 0 #b45309;">
+          Cetak Piagam ✨
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Active Stage Game View -->
+    <section id="gameStageView" class="game-stage-card">
+      <div class="stage-header">
+        <button type="button" class="btn-back-stage" onclick="exitToMainMenu()">
+          <span>◀</span> Menu Utama
+        </button>
+
+        <div style="font-family:var(--font-fun); font-size:1.1rem; font-weight:700; color:#0369a1;" id="stageGameTitle">
+          🎮 Bermain & Belajar
+        </div>
+
+        <div class="star-score-pill">
+          <span>⭐</span> <span id="stageScoreText">0</span>
+        </div>
+      </div>
+
+      <!-- Question Box -->
+      <div class="stage-question-box">
+        <div class="stage-question-text" id="stageQuestionText">Pertanyaan di sini...</div>
+        <div class="stage-sub-prompt" id="stageSubPrompt">Pilihlah salah satu jawaban yang benar:</div>
+        <div class="question-big-visual" id="stageBigVisual">🌟</div>
+
+        <!-- Word slots (for spelling game) -->
+        <div class="word-slots" id="stageWordSlots" style="display:none;"></div>
+        <!-- Letter tiles (for spelling game) -->
+        <div class="letter-tiles" id="stageLetterTiles" style="display:none;"></div>
+
+        <!-- Memory Grid (for memory game) -->
+        <div class="memory-grid" id="stageMemoryGrid" style="display:none;"></div>
+
+        <!-- Drawing Studio (for coloring game) -->
+        <div id="drawingStudio">
+          <div class="drawing-toolbar">
+            <span style="font-size:0.8rem; font-weight:800; color:#64748b; margin-right:4px;">Warna:</span>
+            <div class="color-dot active" style="background:#ef4444;" onclick="setDrawColor('#ef4444', this)"></div>
+            <div class="color-dot" style="background:#f97316;" onclick="setDrawColor('#f97316', this)"></div>
+            <div class="color-dot" style="background:#eab308;" onclick="setDrawColor('#eab308', this)"></div>
+            <div class="color-dot" style="background:#22c55e;" onclick="setDrawColor('#22c55e', this)"></div>
+            <div class="color-dot" style="background:#3b82f6;" onclick="setDrawColor('#3b82f6', this)"></div>
+            <div class="color-dot" style="background:#a855f7;" onclick="setDrawColor('#a855f7', this)"></div>
+            <div class="color-dot" style="background:#0f172a;" onclick="setDrawColor('#0f172a', this)"></div>
+            <button type="button" class="stamp-btn" onclick="toggleRainbowMode(this)" title="Kuas Pelangi Ajaib">🌈 Pelangi</button>
+
+            <span style="font-size:0.8rem; font-weight:800; color:#64748b; margin-left:6px; margin-right:4px;">Ukuran:</span>
+            <button type="button" class="stamp-btn" onclick="setBrushSize(5)">Kecil</button>
+            <button type="button" class="stamp-btn" onclick="setBrushSize(12)">Sedang</button>
+            <button type="button" class="stamp-btn" onclick="setBrushSize(24)">Tebal</button>
+
+            <button type="button" class="stamp-btn" onclick="clearCanvas()" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5;">🧼 Hapus</button>
+            <button type="button" class="stamp-btn" onclick="saveDrawing()" style="background:#dcfce7; color:#15803d; border-color:#86efac;">💾 Simpan</button>
+          </div>
+          <canvas id="drawingCanvasArea" width="550" height="340"></canvas>
+        </div>
+      </div>
+
+      <!-- Options Grid -->
+      <div class="options-grid" id="stageOptionsGrid"></div>
+
+      <!-- Feedback Banner -->
+      <div class="feedback-banner" id="stageFeedback">
+        <span id="feedbackIcon">🎉</span>
+        <span id="feedbackText">Hebat Sekali! Kamu Benar!</span>
+      </div>
+
+      <!-- Next Button -->
+      <button type="button" class="btn-next-action" id="btnNextQuestion" onclick="loadNextQuestion()">
+        <span>Soal Selanjutnya</span> <span>▶</span>
+      </button>
+    </section>
+
+  </div>
+
+  <!-- Certificate Modal -->
+  <div class="modal-overlay" id="certModal">
+    <div class="cert-card" id="certPrintArea">
+      <div style="font-size:3rem; margin-bottom:0.25rem;">🏅</div>
+      <div class="cert-title">PIAGAM BINTANG JUARA</div>
+      <div style="font-size:0.85rem; color:#78350f; font-weight:700; margin-bottom:1rem;">Diberikan dengan penuh rasa bangga kepada:</div>
+
+      <input type="text" class="cert-input-name" id="certStudentName" placeholder="Ketik Nama Murid di Sini..." value="Bintang Prestasi Cilik">
+
+      <div style="background:#fef3c7; border:2px dashed #f59e0b; border-radius:18px; padding:0.85rem; font-size:0.85rem; color:#92400e; font-weight:700; line-height:1.4; margin-bottom:1.25rem;">
+        🌟 Telah menyelesaikan tantangan belajar dengan ceria dan penuh semangat di <strong>Taman Belajar Ceria</strong>. Teruslah rajin dan berprestasi!
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:0 0.5rem; font-size:0.8rem; color:#78350f; font-weight:700; margin-bottom:1.5rem;">
+        <div>Tanggal: <span id="certDateText">23 Okt 2026</span></div>
+        <div>Guru / Pembimbing: <strong>Ibu Guru ❤️</strong></div>
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:0.75rem;">
+        <button type="button" class="btn-cert-save" onclick="printCertificate()">
+          🖨️ Cetak / Simpan PDF
+        </button>
+        <button type="button" class="btn-back-stage" onclick="closeCertificateModal()">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════════════════════════
+       EDUKIDS AUDIO ENGINE & FULL 32-GAME QUESTION BANKS
+       ═══════════════════════════════════════════════════════════════════════════════ */
+
+    // ── Web Audio API Synthesizer (Zero-Latency FX) ──────────────────────────────
+    const SoundEngine = {
+      enabled: true,
+      ctx: null,
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+
+      playPop() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(450, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.1);
+      },
+
+      playCorrect() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        [659.25, 987.77].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.12);
+          gain.gain.setValueAtTime(0.35, this.ctx.currentTime + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.12 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + idx * 0.12);
+          osc.stop(this.ctx.currentTime + idx * 0.12 + 0.35);
+        });
+      },
+
+      playWrong() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(110, this.ctx.currentTime + 0.25);
+        gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.25);
+      },
+
+      playFanfare() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.1);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime + idx * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.1 + 0.4);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + idx * 0.1);
+          osc.stop(this.ctx.currentTime + idx * 0.1 + 0.4);
+        });
+      }
+    };
+
+    // ── Indonesian Speech Synthesis Voice Praise ────────────────────────────────
+    function speakIndonesian(text) {
+      if (!SoundEngine.enabled) return;
+      if ("speechSynthesis" in window) {
+        try {
+          window.speechSynthesis.cancel();
+          const ut = new SpeechSynthesisUtterance(text);
+          ut.lang = "id-ID";
+          ut.rate = 1.0;
+          ut.pitch = 1.25;
+          window.speechSynthesis.speak(ut);
+        } catch (e) {}
+      }
+    }
+
+    // ── Canvas Confetti Celebration ─────────────────────────────────────────────
+    const confettiCanvas = document.getElementById("confettiCanvas");
+    const confettiCtx = confettiCanvas.getContext("2d");
+    let confettiParticles = [];
+
+    function resizeConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeConfetti);
+    resizeConfetti();
+
+    function launchConfetti(count = 60) {
+      const colors = ["#f43f5e", "#fbbf24", "#10b981", "#38bdf8", "#8b5cf6", "#f97316"];
+      for (let i = 0; i < count; i++) {
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: -20,
+          w: Math.random() * 10 + 6,
+          h: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 6,
+          vy: Math.random() * 5 + 3,
+          rot: Math.random() * 360,
+          vrot: (Math.random() - 0.5) * 10,
+        });
+      }
+    }
+
+    function renderConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      for (let i = confettiParticles.length - 1; i >= 0; i--) {
+        const p = confettiParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vrot;
+
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate((p.rot * Math.PI) / 180);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        confettiCtx.restore();
+
+        if (p.y > confettiCanvas.height + 30) {
+          confettiParticles.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(renderConfetti);
+    }
+    renderConfetti();
+
+    // ── Global Game State ───────────────────────────────────────────────────────
+    let gameState = {
+      stars: parseInt(localStorage.getItem("edukids_stars") || "0", 10),
+      currentGame: null,
+      currentQuestionIndex: 0,
+      questions: [],
+      stageScore: 0,
+      memoryFlipped: [],
+      memoryMatchedCount: 0,
+    };
+
+    document.getElementById("globalStars").textContent = gameState.stars;
+
+    function addStars(num) {
+      gameState.stars += num;
+      gameState.stageScore += num;
+      document.getElementById("globalStars").textContent = gameState.stars;
+      document.getElementById("stageScoreText").textContent = gameState.stageScore;
+      localStorage.setItem("edukids_stars", gameState.stars);
+    }
+
+    // ── Complete 32-Game Question Banks (16 TK & 16 SD) ─────────────────────────
+    const GAME_BANKS = {
+      // ── TK 1: Sahabat Satwa
+      animals: [
+        { q: "Hewan apakah yang suka makan wortel dan telinganya panjang?", icon: "🐰", ans: "Kelinci", options: ["Kelinci", "Kucing", "Singa", "Gajah"], hint: "Kelinci melompat-lompat!" },
+        { q: "Manakah yang dijuluki si Raja Hutan dengan auman gagah?", icon: "🦁", ans: "Singa", options: ["Singa", "Bebek", "Kambing", "Monyet"], hint: "Singa berambut tebal!" },
+        { q: "Hewan apakah yang punya belalai panjang dan telinga lebar?", icon: "🐘", ans: "Gajah", options: ["Gajah", "Kucing", "Ayam", "Kuda"], hint: "Gajah bertubuh besar!" },
+        { q: "Hewan apa yang bunyinya 'Meee-ooong' dan suka ikan?", icon: "🐱", ans: "Kucing", options: ["Kucing", "Anjing", "Sapi", "Burung"], hint: "Kucing sangat lucu!" },
+        { q: "Hewan penghasil susu bergizi yang bunyinya 'Moooo'?", icon: "🐮", ans: "Sapi", options: ["Sapi", "Kelinci", "Bebek", "Harimau"], hint: "Sapi suka makan rumput!" },
+        { q: "Hewan berbulu indah yang suka berenang dan berbunyi 'Kwek kwek'?", icon: "🦆", ans: "Bebek", options: ["Bebek", "Monyet", "Kucing", "Singa"], hint: "Bebek punya paruh kuning!" }
+      ],
+
+      // ── TK 2: Buah & Warna
+      fruits: [
+        { q: "Manakah buah Apel yang berwarna Merah manis?", icon: "🍎", ans: "Apel Merah", options: ["Apel Merah", "Pisang Kuning", "Jeruk Oranye", "Anggur Ungu"], hint: "Apel merah kaya vitamin!" },
+        { q: "Manakah buah Pisang kesukaan monyet yang berwarna Kuning?", icon: "🍌", ans: "Pisang Kuning", options: ["Pisang Kuning", "Semangka Hijau", "Apel Merah", "Alpukat"], hint: "Pisang rasanya manis lembut!" },
+        { q: "Manakah buah Jeruk segar yang kaya akan Vitamin C?", icon: "🍊", ans: "Jeruk Segar", options: ["Jeruk Segar", "Kelapa", "Nanas", "Manggis"], hint: "Jeruk rasanya manis asam segar!" },
+        { q: "Buah dengan kulit hijau dan daging merah berbiji manis?", icon: "🍉", ans: "Semangka", options: ["Semangka", "Melon", "Pir", "Pepaya"], hint: "Semangka sangat segar di cuaca panas!" }
+      ],
+
+      // ── TK 3: Hitung Ceria 1-10
+      counting: [
+        { q: "Berapa banyak donat lezat yang ada di piring?", icon: "🍩 🍩 🍩", ans: "3", options: ["3", "2", "5", "4"], hint: "Hitung satu, dua, tiga!" },
+        { q: "Ada berapa jumlah bintang berkilau di langit?", icon: "⭐ ⭐ ⭐ ⭐ ⭐", ans: "5", options: ["5", "4", "6", "3"], hint: "Hitung bintangnya pelan-pelan!" },
+        { q: "Hitung ada berapa buah apel segar ini?", icon: "🍎 🍎", ans: "2", options: ["2", "1", "3", "4"], hint: "Ada satu, dua!" },
+        { q: "Berapa banyak permen manis warna-warni ini?", icon: "🍬 🍬 🍬 🍬", ans: "4", options: ["4", "3", "5", "6"], hint: "Hitung bersama-sama ya!" }
+      ],
+
+      // ── TK 4: Taman Abjad A-Z
+      alphabet: [
+        { q: "Huruf apakah yang mengawali kata 'APEL'?", icon: "🍎", ans: "Huruf A", options: ["Huruf A", "Huruf B", "Huruf C", "Huruf D"], hint: "A untuk Apel!" },
+        { q: "Huruf apakah yang mengawali kata 'BOLA'?", icon: "⚽", ans: "Huruf B", options: ["Huruf B", "Huruf K", "Huruf M", "Huruf S"], hint: "B untuk Bola!" },
+        { q: "Huruf apakah yang mengawali kata 'KUCING'?", icon: "🐱", ans: "Huruf K", options: ["Huruf K", "Huruf G", "Huruf L", "Huruf P"], hint: "K untuk Kucing!" },
+        { q: "Huruf apakah yang mengawali kata 'MATAHARI'?", icon: "☀️", ans: "Huruf M", options: ["Huruf M", "Huruf N", "Huruf T", "Huruf H"], hint: "M untuk Matahari!" }
+      ],
+
+      // ── TK 5: Bentuk Geometri
+      shapes: [
+        { q: "Manakah bangun datar yang berbentuk Segitiga?", icon: "🔺", ans: "Segitiga", options: ["Segitiga", "Lingkaran", "Persegi", "Bintang"], hint: "Segitiga punya 3 sudut!" },
+        { q: "Bentuk apakah roda sepeda dan bola sepak?", icon: "⚽", ans: "Lingkaran", options: ["Lingkaran", "Persegi", "Segitiga", "Tabung"], hint: "Lingkaran bulat tanpa sudut!" },
+        { q: "Benda buku dan kotak kado umumnya berbentuk...", icon: "📦", ans: "Persegi", options: ["Persegi", "Lingkaran", "Segitiga", "Oval"], hint: "Persegi punya 4 sisi sama panjang!" },
+        { q: "Bentuk yang berkelip di langit malam hari adalah...", icon: "⭐", ans: "Bintang", options: ["Bintang", "Hati", "Lingkaran", "Segitiga"], hint: "Bintang bersinar terang!" }
+      ],
+
+      // ── TK 6: Sahabat Kendaraan
+      transport: [
+        { q: "Kendaraan yang berjalan di atas rel besi dan bersuara 'Tut-tut'?", icon: "🚂", ans: "Kereta Api", options: ["Kereta Api", "Mobil", "Pesawat", "Perahu"], hint: "Kereta api punya banyak gerbong!" },
+        { q: "Kendaraan bersayap yang terbang tinggi di awan langit?", icon: "✈️", ans: "Pesawat Terbang", options: ["Pesawat Terbang", "Kapal Laut", "Bus", "Sepeda"], hint: "Pesawat dikemudikan pilot!" },
+        { q: "Kendaraan yang berlayar mengarungi lautan ombak?", icon: "🚢", ans: "Kapal Laut", options: ["Kapal Laut", "Truk", "Kereta", "Helikopter"], hint: "Kapal dikemudikan nakhoda!" },
+        { q: "Kendaraan roda dua yang dikayuh menggunakan kaki?", icon: "🚲", ans: "Sepeda", options: ["Sepeda", "Mobil", "Becak", "Kereta"], hint: "Bersepeda sangat menyehatkan tubuh!" }
+      ],
+
+      // ── TK 7: Panca Indra & Tubuh
+      senses: [
+        { q: "Bagian tubuh manakah yang kita gunakan untuk MELIHAT pemandangan indah?", icon: "👀", ans: "Mata", options: ["Mata", "Telinga", "Hidung", "Kaki"], hint: "Mata kita ada dua untuk melihat!" },
+        { q: "Bagian tubuh manakah yang kita gunakan untuk MENDENGAR suara musik?", icon: "👂", ans: "Telinga", options: ["Telinga", "Mata", "Mulut", "Tangan"], hint: "Telinga untuk mendengar suara merdu!" },
+        { q: "Bagian tubuh untuk MENCIUM wangi harum bunga mawar?", icon: "👃", ans: "Hidung", options: ["Hidung", "Telinga", "Lidah", "Kaki"], hint: "Hidung untuk bernapas dan mencium bau!" },
+        { q: "Bagian tubuh untuk MERASAKAN manisnya permen dan es krim?", icon: "👅", ans: "Lidah", options: ["Lidah", "Telinga", "Hidung", "Mata"], hint: "Lidah untuk mengecap rasa makanan!" }
+      ],
+
+      // ── TK 8: Cuaca & Langit
+      weather: [
+        { q: "Saat air turun dari langit membasahi bumi, cuacanya sedang...", icon: "🌧️", ans: "Hujan", options: ["Hujan", "Panas Terik", "Salju", "Berangin"], hint: "Saat hujan kita pakai payung!" },
+        { q: "Busur warna-warni indah yang muncul di langit sehabis hujan adalah...", icon: "🌈", ans: "Pelangi", options: ["Pelangi", "Matahari", "Petir", "Awan Hitam"], hint: "Pelangi ada warna mejikuhibiniu!" },
+        { q: "Benda langit yang bersinar terik di siang hari dan menghangatkan bumi?", icon: "☀️", ans: "Matahari", options: ["Matahari", "Bulan", "Bintang", "Lampu"], hint: "Matahari terbit di pagi hari!" },
+        { q: "Suara dentuman menggelegar dan kilatan cahaya di langit saat mendung?", icon: "⚡", ans: "Petir & Kilat", options: ["Petir & Kilat", "Pelangi", "Embun", "Angin Sepoi"], hint: "Jangan main di luar saat ada petir!" }
+      ],
+
+      // ── TK 9: Pakaian & Baju
+      clothes: [
+        { q: "Pakaian yang kita pakai setiap hari Senin sampai Jumat ke sekolah?", icon: "👔", ans: "Seragam Sekolah", options: ["Seragam Sekolah", "Baju Tidur", "Baju Renang", "Jas Hujan"], hint: "Seragam sekolah rapi dan bersih!" },
+        { q: "Benda yang kita pakai di kepala untuk melindungi dari sinar panas matahari?", icon: "🧢", ans: "Topi", options: ["Topi", "Sepatu", "Kaos Kaki", "Sarung Tangan"], hint: "Topi dipakai di atas kepala!" },
+        { q: "Alas kaki yang kita pakai bersama kaos kaki saat bepergian?", icon: "👟", ans: "Sepatu", options: ["Sepatu", "Topi", "Kacamata", "Dasi"], hint: "Sepatu melindungi kaki kita!" },
+        { q: "Pakaian hangat tebal yang kita gunakan saat udara terasa sangat dingin?", icon: "🧥", ans: "Jaket / Sweater", options: ["Jaket / Sweater", "Kaos Singlet", "Topi Pantai", "Kacamata"], hint: "Jaket bikin badan hangat!" }
+      ],
+
+      // ── TK 10: Sayuran Sehat
+      veggies: [
+        { q: "Sayuran berwarna oranye yang sangat baik untuk kesehatan mata kita?", icon: "🥕", ans: "Wortel", options: ["Wortel", "Terong", "Bawang", "Cabai"], hint: "Wortel kaya Vitamin A!" },
+        { q: "Sayuran hijau berdaun yang membuat tubuh kita kuat dan bertenaga?", icon: "🥬", ans: "Bayam", options: ["Bayam", "Jagung", "Kentang", "Tomat"], hint: "Bayam kaya zat besi seperti Popeye!" },
+        { q: "Sayuran hijau yang bentuknya menyerupai pohon kecil rindang?", icon: "🥦", ans: "Brokoli", options: ["Brokoli", "Wortel", "Cabai", "Buncis"], hint: "Brokoli lezat dimasak sup!" },
+        { q: "Buah sayur berwarna merah bulat yang segar dan kaya vitamin?", icon: "🍅", ans: "Tomat", options: ["Tomat", "Timun", "Labu", "Pare"], hint: "Tomat manis dan segar!" }
+      ],
+
+      // ── TK 11: Alat Musik Ceria
+      music: [
+        { q: "Alat musik bersenar yang dimainkan dengan cara dipetik jemari?", icon: "🎸", ans: "Gitar", options: ["Gitar", "Drum", "Terompet", "Pianika"], hint: "Gitar punya senar merdu!" },
+        { q: "Alat musik yang memiliki tuts hitam dan putih dipencet lembut?", icon: "🎹", ans: "Piano", options: ["Piano", "Gendang", "Suling", "Biola"], hint: "Piano menghasilkan nada indah!" },
+        { q: "Alat musik yang dimainkan dengan cara dipukul menggunakan dua stik?", icon: "🥁", ans: "Drum", options: ["Drum", "Gitar", "Terompet", "Harpa"], hint: "Drum bunyinya 'Duk-duk-tak!'!" },
+        { q: "Alat musik tiup dari logam berkilau emas yang bunyinya nyaring gembira?", icon: "🎺", ans: "Terompet", options: ["Terompet", "Piano", "Gitar", "Rebana"], hint: "Terompet bunyinya 'Tret-tet-tet!'!" }
+      ],
+
+      // ── TK 12: Hidup Bersih & Sehat
+      hygiene: [
+        { q: "Benda yang kita gunakan bersama pasta gigi untuk membersihkan gigi?", icon: "🪥", ans: "Sikat Gigi", options: ["Sikat Gigi", "Sabun Mandi", "Sisir Rambut", "Gunting"], hint: "Sikat gigi pagi dan sebelum tidur!" },
+        { q: "Sebelum makan kue lezat, hal yang wajib kita lakukan adalah...", icon: "🧼", ans: "Mencuci Tangan", options: ["Mencuci Tangan", "Tidur Siang", "Menyisir Rambut", "Memakai Topi"], hint: "Cuci tangan pakai sabun bersih!" },
+        { q: "Ke manakah kita harus membuang bungkus permen dan sampah?", icon: "🗑️", ans: "Tempat Sampah", options: ["Tempat Sampah", "Lantai Kamar", "Sungai", "Halaman Rumah"], hint: "Buang sampah pada tempatnya!" },
+        { q: "Kain lembut yang kita pakai untuk mengeringkan tubuh setelah mandi segar?", icon: "🛁", ans: "Handuk", options: ["Handuk", "Selimut", "Bantal", "Gorden"], hint: "Handuk bersih menyerap air!" }
+      ],
+
+      // ── TK 13: Keluargaku Sayang
+      family: [
+        { q: "Sosok wanita hebat penuh kasih sayang yang melahirkan dan merawat kita?", icon: "👩‍👧", ans: "Ibu", options: ["Ibu", "Paman", "Kakek", "Tetangga"], hint: "Ibu tersayang penuh kasih!" },
+        { q: "Sosok pria kepala keluarga yang bekerja keras mencari nafkah untuk kita?", icon: "👨‍👦", ans: "Ayah", options: ["Ayah", "Bibi", "Nenek", "Sepupu"], hint: "Ayah pelindung keluarga!" },
+        { q: "Orang tua dari ayah atau ibu kita yang laki-laki disebut...", icon: "👴", ans: "Kakek", options: ["Kakek", "Paman", "Kakak", "Adik"], hint: "Kakek tersayang berambut putih!" },
+        { q: "Orang tua dari ayah atau ibu kita yang perempuan dipanggil...", icon: "👵", ans: "Nenek", options: ["Nenek", "Bibi", "Ibu Guru", "Teman"], hint: "Nenek sering memasak kue lezat!" }
+      ],
+
+      // ── TK 14: Campur Warna Ajaib
+      color_mix: [
+        { q: "Jika warna MERAH dicampur dengan warna KUNING, akan menjadi warna...", icon: "🎨", ans: "Oranye (Jingga)", options: ["Oranye (Jingga)", "Biru", "Hitam", "Hijau"], hint: "Merah + Kuning = Oranye seperti jeruk!" },
+        { q: "Jika warna BIRU dicampur dengan warna KUNING, akan menjadi warna...", icon: "🎨", ans: "Hijau", options: ["Hijau", "Ungu", "Merah", "Cokelat"], hint: "Biru + Kuning = Hijau seperti daun!" },
+        { q: "Jika warna MERAH dicampur dengan warna BIRU, akan menjadi warna...", icon: "🎨", ans: "Ungu", options: ["Ungu", "Kuning", "Putih", "Hijau"], hint: "Merah + Biru = Ungu seperti anggur!" },
+        { q: "Warna MERAH jika dicampur dengan PUTIH akan berubah menjadi warna...", icon: "🌸", ans: "Merah Muda (Pink)", options: ["Merah Muda (Pink)", "Abu-Abu", "Cokelat", "Hitam"], hint: "Merah + Putih = Pink lembut!" }
+      ],
+
+      // ── SD 1: Matematika Juara
+      math: [
+        { q: "Berapakah hasil dari penjumlahan: 4 + 3 = ?", icon: "➕", ans: "7", options: ["7", "6", "8", "9"], hint: "4 ditambah 3 sama dengan 7!" },
+        { q: "Berapakah hasil dari pengurangan: 10 - 4 = ?", icon: "➖", ans: "6", options: ["6", "5", "7", "4"], hint: "10 dikurangi 4 sama dengan 6!" },
+        { q: "Ibu membeli 5 donat, lalu ayah membawa 4 donat lagi. Berapa totalnya?", icon: "🍩", ans: "9", options: ["9", "8", "10", "7"], hint: "5 ditambah 4 = 9!" },
+        { q: "Ada 15 permen, 5 permen dimakan adik. Berapa sisa permen sekarang?", icon: "🍬", ans: "10", options: ["10", "8", "12", "11"], hint: "15 dikurangi 5 = 10!" }
+      ],
+
+      // ── SD 2: Perkalian Ceria
+      multiply: [
+        { q: "Berapakah hasil perkalian ceria: 3 × 3 = ?", icon: "✖️", ans: "9", options: ["9", "6", "12", "8"], hint: "Tiga kali tiga sama dengan sembilan!" },
+        { q: "Berapakah hasil perkalian: 5 × 2 = ?", icon: "✖️", ans: "10", options: ["10", "12", "8", "15"], hint: "5 dikali 2 sama dengan 10!" },
+        { q: "Berapakah hasil perkalian: 4 × 4 = ?", icon: "✖️", ans: "16", options: ["16", "12", "18", "14"], hint: "Empat kali empat sama dengan 16!" },
+        { q: "Berapakah hasil perkalian: 2 × 7 = ?", icon: "✖️", ans: "14", options: ["14", "12", "16", "9"], hint: "Dua kali tujuh = 14!" }
+      ],
+
+      // ── SD 3: Susun Ejaan Kata
+      spelling: [
+        { word: "BUKU", icon: "📖", hint: "Benda yang kita baca untuk belajar" },
+        { word: "KUCING", icon: "🐱", hint: "Hewan peliharaan yang berbunyi meong" },
+        { word: "MOBIL", icon: "🚗", hint: "Kendaraan roda empat di jalan raya" },
+        { word: "RUMAH", icon: "🏠", hint: "Tempat kita tinggal bersama keluarga" },
+        { word: "SEPATU", icon: "👟", hint: "Alas kaki yang kita pakai ke sekolah" },
+        { word: "BURUNG", icon: "🦜", hint: "Hewan berbulu yang bisa terbang tinggi" },
+        { word: "PENSIL", icon: "✏️", hint: "Alat tulis untuk menggambar dan menulis" },
+        { word: "SEPEDA", icon: "🚲", hint: "Kendaraan roda dua yang dikayuh kaki" }
+      ],
+
+      // ── SD 4: Cerdas Cermat Ceria
+      quiz: [
+        { q: "Apakah lambang negara Republik Indonesia?", icon: "🇮🇩", ans: "Burung Garuda", options: ["Burung Garuda", "Harimau", "Banteng", "Gajah"], hint: "Garuda Pancasila lambang negara kita!" },
+        { q: "Matahari terbit di pagi hari dari arah mana?", icon: "🌅", ans: "Timur", options: ["Timur", "Barat", "Selatan", "Utara"], hint: "Matahari terbit di Timur dan terbenam di Barat!" },
+        { q: "Hewan apakah yang bernapas menggunakan insang?", icon: "🐟", ans: "Ikan", options: ["Ikan", "Kucing", "Burung", "Sapi"], hint: "Ikan hidup di dalam air dan punya insang!" },
+        { q: "Berapakah jumlah sila dalam dasar negara Pancasila?", icon: "📜", ans: "5 Sila", options: ["5 Sila", "3 Sila", "4 Sila", "6 Sila"], hint: "Pancasila memiliki lima sila!" },
+        { q: "Warna bendera negara Indonesia adalah...", icon: "🚩", ans: "Merah dan Putih", options: ["Merah dan Putih", "Biru dan Putih", "Merah dan Kuning", "Hijau dan Putih"], hint: "Merah berani dan putih suci!" }
+      ],
+
+      // ── SD 5: Belajar Jam Waktu
+      clock: [
+        { q: "Jika jarum pendek di angka 3 dan jarum panjang di angka 12, jam berapa itu?", icon: "🕒", ans: "Pukul 03:00", options: ["Pukul 03:00", "Pukul 12:00", "Pukul 06:00", "Pukul 09:00"], hint: "Jarum pendek menunjukkan jam 3!" },
+        { q: "Jika jam menunjukkan pukul 07:00 pagi, biasanya kita bersiap untuk...", icon: "🎒", ans: "Berangkat Sekolah", options: ["Berangkat Sekolah", "Tidur Malam", "Makan Siang", "Melihat Bintang"], hint: "Pagi hari kita semangat ke sekolah!" },
+        { q: "Jarum pendek di angka 12 dan jarum panjang di angka 12, menunjukkan jam...", icon: "🕛", ans: "Pukul 12:00", options: ["Pukul 12:00", "Pukul 06:00", "Pukul 01:00", "Pukul 11:00"], hint: "Tepat pukul 12 siang atau malam!" },
+        { q: "Berapa menit dalam 1 jam penuh?", icon: "⏱️", ans: "60 Menit", options: ["60 Menit", "30 Menit", "100 Menit", "12 Menit"], hint: "1 jam ada 60 menit!" }
+      ],
+
+      // ── SD 6: Kantin Pintar (Uang Rupiah)
+      money: [
+        { q: "Budi membeli es krim seharga Rp 3.000. Dia membayar dengan uang Rp 5.000. Berapa uang kembaliannya?", icon: "🍦", ans: "Rp 2.000", options: ["Rp 2.000", "Rp 1.000", "Rp 3.000", "Rp 4.000"], hint: "5.000 dikurangi 3.000 = 2.000!" },
+        { q: "Manakah pecahan uang rupiah kertas berwarna hijau?", icon: "💵", ans: "Rp 20.000", options: ["Rp 20.000", "Rp 50.000", "Rp 100.000", "Rp 10.000"], hint: "Uang 20 ribu berwarna hijau segar!" },
+        { q: "Jika kamu punya dua lembar uang Rp 2.000, berapa total uangmu?", icon: "👛", ans: "Rp 4.000", options: ["Rp 4.000", "Rp 2.000", "Rp 5.000", "Rp 6.000"], hint: "2.000 ditambah 2.000 = 4.000!" },
+        { q: "Membeli roti Rp 2.500 dan jus jeruk Rp 2.500. Berapa uang yang harus dibayar?", icon: "🍞", ans: "Rp 5.000", options: ["Rp 5.000", "Rp 4.000", "Rp 6.000", "Rp 10.000"], hint: "2.500 + 2.500 = 5.000!" }
+      ],
+
+      // ── SD 7: Petualangan Planet
+      space: [
+        { q: "Planet tempat kita hidup dan memiliki air serta udara adalah...", icon: "🌍", ans: "Bumi", options: ["Bumi", "Mars", "Jupiter", "Venus"], hint: "Bumi planet ketiga dari Matahari!" },
+        { q: "Benda langit yang bersinar indah di malam hari mengelilingi Bumi adalah...", icon: "🌕", ans: "Bulan", options: ["Bulan", "Matahari", "Bintang Jatuh", "Awan"], hint: "Bulan satelit alami Bumi!" },
+        { q: "Planet apakah yang memiliki cincin es indah melingkar di sekelilingnya?", icon: "🪐", ans: "Saturnus", options: ["Saturnus", "Merkurius", "Mars", "Pluto"], hint: "Saturnus terkenal dengan cincinnya!" },
+        { q: "Pusat dari tata surya kita yang memancarkan cahaya dan panas adalah...", icon: "☀️", ans: "Matahari", options: ["Matahari", "Bumi", "Komet", "Asteroid"], hint: "Matahari adalah bintang raksasa!" }
+      ],
+
+      // ── SD 8: Nusantara Juara
+      heroes: [
+        { q: "Siapakah pahlawan wanita yang memperjuangkan pendidikan kaum perempuan?", icon: "👩‍🏫", ans: "R.A. Kartini", options: ["R.A. Kartini", "Cut Nyak Dien", "Dewi Sartika", "Fatmawati"], hint: "Ibu Kartini dikenang setiap 21 April!" },
+        { q: "Rumah adat Rumah Gadang yang atapnya menyerupai tanduk kerbau berasal dari...", icon: "🏠", ans: "Sumatera Barat", options: ["Sumatera Barat", "Jawa Tengah", "Bali", "Papua"], hint: "Rumah Gadang dari Minangkabau Sumbar!" },
+        { q: "Siapakah pencipta lagu kebangsaan Indonesia Raya?", icon: "🎵", ans: "W.R. Supratman", options: ["W.R. Supratman", "Ismail Marzuki", "Ibu Sud", "Kusbini"], hint: "Wage Rudolf Supratman membiola lagu Indonesia Raya!" },
+        { q: "Senjata tradisional khas Jawa yang berlekuk-lekuk adalah...", icon: "🗡️", ans: "Keris", options: ["Keris", "Rencong", "Mandau", "Kujang"], hint: "Keris warisan budaya agung!" }
+      ],
+
+      // ── SD 9: Besar vs Kecil
+      compare: [
+        { q: "Manakah hewan yang tubuhnya jauh lebih BESAR dan BERAT?", icon: "🐘 🐱", ans: "Gajah", options: ["Gajah", "Kucing"], hint: "Gajah bertubuh raksasa berton-ton!" },
+        { q: "Manakah benda yang memiliki ukuran lebih PANJANG?", icon: "📏 ✏️", ans: "Penggaris 30 cm", options: ["Penggaris 30 cm", "Penghapus Karet", "Rautan Pensil", "Klip Kertas"], hint: "Penggaris 30 cm jauh lebih panjang!" },
+        { q: "Manakah yang menghasilkan suara paling KERAS?", icon: "📢 🐜", ans: "Sirene Ambulans", options: ["Sirene Ambulans", "Bisikan Teman", "Semut Berjalan", "Jatuhnya Daun"], hint: "Sirene berbunyi nyaring kencang!" }
+      ],
+
+      // ── SD 10: Pemakan Tumbuhan & Daging
+      animal_diet: [
+        { q: "Hewan pemakan tumbuhan seperti sapi, kambing, dan kelinci disebut...", icon: "🌿", ans: "Herbivora", options: ["Herbivora", "Karnivora", "Omnivora", "Insektivora"], hint: "Herbivora memakan rumput dan daun!" },
+        { q: "Hewan pemakan daging seperti singa, harimau, dan elang disebut...", icon: "🥩", ans: "Karnivora", options: ["Karnivora", "Herbivora", "Omnivora", "Amfibi"], hint: "Karnivora memiliki taring dan cakar tajam!" },
+        { q: "Hewan pemakan segala (daging dan tumbuhan) seperti ayam dan monyet adalah...", icon: "🐔", ans: "Omnivora", options: ["Omnivora", "Herbivora", "Karnivora", "Reptil"], hint: "Omnivora memakan biji dan cacing!" },
+        { q: "Kelinci sangat suka makan rumput dan wortel. Maka kelinci termasuk hewan...", icon: "🐰", ans: "Herbivora", options: ["Herbivora", "Karnivora", "Kutub", "Serangga"], hint: "Kelinci herbivora ceria!" }
+      ],
+
+      // ── SD 11: Sahabat Tumbuhan
+      plants: [
+        { q: "Bagian tumbuhan yang berada di dalam tanah dan bertugas menyerap air adalah...", icon: "🌱", ans: "Akar", options: ["Akar", "Bunga", "Daun", "Buah"], hint: "Akar mengokohkan tanaman di tanah!" },
+        { q: "Bagian tumbuhan yang berwarna hijau dan bertugas membuat makanan lewat fotosintesis?", icon: "🍃", ans: "Daun", options: ["Daun", "Akar", "Biji", "Ranting"], hint: "Daun mengandung klorofil hijau!" },
+        { q: "Bagian tumbuhan yang cantik mekar warna-warni dan harum baunya adalah...", icon: "🌸", ans: "Bunga", options: ["Bunga", "Akar", "Duri", "Kulit"], hint: "Bunga menarik lebah dan kupu-kupu!" },
+        { q: "Tumbuhan menghasilkan gas segar yang kita hirup setiap hari, yaitu gas...", icon: "💨", ans: "Oksigen", options: ["Oksigen", "Karbon", "Asap", "Minyak"], hint: "Oksigen segar dari pohon hijau!" }
+      ],
+
+      // ── SD 12: Peta Pulau Nusantara
+      islands: [
+        { q: "Pulau apakah di Indonesia yang memiliki bentuk menyerupai huruf K?", icon: "🗺️", ans: "Sulawesi", options: ["Sulawesi", "Jawa", "Sumatera", "Papua"], hint: "Pulau Sulawesi berbentuk huruf K!" },
+        { q: "Pulau terpadat di Indonesia tempat ibu kota Jakarta berada adalah pulau...", icon: "🏙️", ans: "Jawa", options: ["Jawa", "Kalimantan", "Bali", "Maluku"], hint: "Pulau Jawa sangat maju dan ramai!" },
+        { q: "Pulau paling timur Indonesia yang memiliki burung Cendrawasih indah adalah pulau...", icon: "🦜", ans: "Papua", options: ["Papua", "Sumatera", "Lombok", "Bangka"], hint: "Papua tanah emas dan cenderawasih!" },
+        { q: "Pulau yang dijuluki Pulau Dewata dan terkenal dengan keindahan pantainya adalah...", icon: "🌺", ans: "Bali", options: ["Bali", "Madura", "Nias", "Flores"], hint: "Pulau Bali terkenal di seluruh dunia!" }
+      ],
+
+      // ── SD 13: Pahlawan Hemat Energi
+      energy: [
+        { q: "Tindakan bijak yang harus kita lakukan saat meninggalkan ruangan kosong adalah...", icon: "💡", ans: "Mematikan Lampu", options: ["Mematikan Lampu", "Menyalakan TV", "Membuka Keran", "Menyalakan Kipas"], hint: "Matikan lampu hemat listrik!" },
+        { q: "Sumber energi terbesar dan tak pernah habis di bumi adalah...", icon: "☀️", ans: "Matahari", options: ["Matahari", "Batu Bara", "Baterai", "Minyak Bumi"], hint: "Energi surya dari matahari!" },
+        { q: "Saat menggosok gigi, agar air bersih tidak terbuang sia-sia kita sebaiknya...", icon: "🚰", ans: "Menutup Keran Air", options: ["Menutup Keran Air", "Membiarkan Mengalir", "Bermain Air", "Menyiram Lantai"], hint: "Tutup keran saat menyikat gigi!" },
+        { q: "Kendaraan ramah lingkungan yang tidak menghasilkan asap polusi adalah...", icon: "🚲", ans: "Sepeda", options: ["Sepeda", "Truk Besar", "Sepeda Motor", "Bus Tua"], hint: "Sepeda sehat bebas polusi!" }
+      ],
+
+      // ── SD 14: Lawan Kata Pintar (Antonim)
+      antonyms: [
+        { q: "Lawan kata dari 'BESAR' adalah...", icon: "🐘 🐭", ans: "Kecil", options: ["Kecil", "Luas", "Panjang", "Lebar"], hint: "Gajah besar, semut kecil!" },
+        { q: "Lawan kata dari 'TERANG' adalah...", icon: "☀️ 🌑", ans: "Gelap", options: ["Gelap", "Silau", "Hangat", "Dingin"], hint: "Siang terang, malam gelap!" },
+        { q: "Lawan kata dari 'CEPAT' berlari seperti kelinci adalah...", icon: "🐇 🐢", ans: "Lambat", options: ["Lambat", "Tinggi", "Kencang", "Jauh"], hint: "Kura-kura berjalan lambat!" },
+        { q: "Lawan kata dari 'TINGGI' menjulang adalah...", icon: "🌲 🍄", ans: "Rendah / Pendek", options: ["Rendah / Pendek", "Gemuk", "Panjang", "Kurus"], hint: "Pohon tinggi, rumput rendah!" }
+      ],
+
+      // ── SD 15: Bintang Pancasila
+      pancasila: [
+        { q: "Simbol apakah yang melambangkan Sila Pertama: 'Ketuhanan Yang Maha Esa'?", icon: "⭐", ans: "Bintang Emas", options: ["Bintang Emas", "Rantai Baja", "Pohon Beringin", "Kepala Banteng"], hint: "Bintang emas bersudut lima!" },
+        { q: "Simbol pohon rindang apakah yang melambangkan Sila Ketiga: 'Persatuan Indonesia'?", icon: "🌳", ans: "Pohon Beringin", options: ["Pohon Beringin", "Pohon Kelapa", "Pohon Mangga", "Padi dan Kapas"], hint: "Pohon beringin tempat berteduh!" },
+        { q: "Simbol pangan dan sandang kemakmuran Sila Kelima adalah...", icon: "🌾", ans: "Padi dan Kapas", options: ["Padi dan Kapas", "Bintang Emas", "Rantai Emas", "Kepala Banteng"], hint: "Padi makanan pokok dan kapas pakaian!" },
+        { q: "Simbol hewan tangguh musyawarah Sila Keempat adalah...", icon: "🐂", ans: "Kepala Banteng", options: ["Kepala Banteng", "Singa", "Harimau", "Burung Elang"], hint: "Banteng suka berkumpul bermusyawarah!" }
+      ],
+
+      // ── SD 16: Teka-Teki Asah Otak
+      riddles: [
+        { q: "Aku punya leher tapi tidak punya kepala, dan aku memakai tutup. Siapakah aku?", icon: "🍾", ans: "Botol Minum", options: ["Botol Minum", "Baju", "Kemeja", "Gelas"], hint: "Botol punya leher dan tutup!" },
+        { q: "Aku punya banyak gigi tapi tidak bisa menggigit makanan. Benda apakah aku?", icon: "🪮", ans: "Sisir Rambut", options: ["Sisir Rambut", "Gergaji", "Garpu", "Buaya"], hint: "Sisir untuk merapikan rambut!" },
+        { q: "Aku selalu naik saat hujan turun deras agar kamu tidak basah. Apakah aku?", icon: "☂️", ans: "Payung", options: ["Payung", "Topi", "Sepatu", "Kacamata"], hint: "Payung dibuka saat hujan!" },
+        { q: "Aku punya jarum tapi tidak bisa menjahit pakaian. Benda apakah aku?", icon: "⏰", ans: "Jam Dinding", options: ["Jam Dinding", "Kompas", "Benang", "Gunting"], hint: "Jam punya jarum jam dan menit!" }
+      ]
+    };
+
+    // ── Search Filter Logic ────────────────────────────────────────────────────
+    function filterGames(query) {
+      const q = query.toLowerCase().trim();
+      const cards = document.querySelectorAll(".game-card");
+      cards.forEach(card => {
+        const title = card.querySelector(".game-title").textContent.toLowerCase();
+        const desc = card.querySelector(".game-desc").textContent.toLowerCase();
+        const tags = (card.dataset.tags || "").toLowerCase();
+        if (!q || title.includes(q) || desc.includes(q) || tags.includes(q)) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    // ── Level Category Tab Switching ───────────────────────────────────────────
+    const tabTkBtn = document.getElementById("tabTkBtn");
+    const tabSdBtn = document.getElementById("tabSdBtn");
+    const gridTkGames = document.getElementById("gridTkGames");
+    const gridSdGames = document.getElementById("gridSdGames");
+
+    tabTkBtn.addEventListener("click", () => {
+      SoundEngine.playPop();
+      tabTkBtn.classList.add("active");
+      tabSdBtn.classList.remove("active");
+      gridTkGames.style.display = "grid";
+      gridSdGames.style.display = "none";
+      document.getElementById("gameSearchInput").value = "";
+      filterGames("");
+    });
+
+    tabSdBtn.addEventListener("click", () => {
+      SoundEngine.playPop();
+      tabSdBtn.classList.add("active");
+      tabTkBtn.classList.remove("active");
+      gridSdGames.style.display = "grid";
+      gridTkGames.style.display = "none";
+      document.getElementById("gameSearchInput").value = "";
+      filterGames("");
+    });
+
+    // ── Sound Toggle ───────────────────────────────────────────────────────────
+    const soundToggleBtn = document.getElementById("soundToggleBtn");
+    soundToggleBtn.addEventListener("click", () => {
+      SoundEngine.enabled = !SoundEngine.enabled;
+      soundToggleBtn.textContent = SoundEngine.enabled ? "🔊" : "🔇";
+      if (SoundEngine.enabled) SoundEngine.playPop();
+    });
+
+    // ── Drawing Studio Logic ───────────────────────────────────────────────────
+    const drawingCanvas = document.getElementById("drawingCanvasArea");
+    const drawCtx = drawingCanvas.getContext("2d");
+    let isDrawing = false;
+    let currentColor = "#ef4444";
+    let currentBrushSize = 8;
+    let isRainbowMode = false;
+    let rainbowHue = 0;
+
+    function initDrawingCanvas() {
+      drawCtx.lineCap = "round";
+      drawCtx.lineJoin = "round";
+      drawCtx.fillStyle = "#ffffff";
+      drawCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+
+      function getPos(e) {
+        const rect = drawingCanvas.getBoundingClientRect();
+        const scaleX = drawingCanvas.width / rect.width;
+        const scaleY = drawingCanvas.height / rect.height;
+        if (e.touches && e.touches[0]) {
+          return {
+            x: (e.touches[0].clientX - rect.left) * scaleX,
+            y: (e.touches[0].clientY - rect.top) * scaleY
+          };
+        }
+        return {
+          x: (e.clientX - rect.left) * scaleX,
+          y: (e.clientY - rect.top) * scaleY
+        };
+      }
+
+      function startDraw(e) {
+        e.preventDefault();
+        isDrawing = true;
+        const pos = getPos(e);
+        drawCtx.beginPath();
+        drawCtx.moveTo(pos.x, pos.y);
+      }
+
+      function drawMove(e) {
+        if (!isDrawing) return;
+        e.preventDefault();
+        const pos = getPos(e);
+
+        if (isRainbowMode) {
+          rainbowHue = (rainbowHue + 4) % 360;
+          drawCtx.strokeStyle = `hsl(${rainbowHue}, 100%, 50%)`;
+        } else {
+          drawCtx.strokeStyle = currentColor;
+        }
+
+        drawCtx.lineWidth = currentBrushSize;
+        drawCtx.lineTo(pos.x, pos.y);
+        drawCtx.stroke();
+      }
+
+      function stopDraw(e) {
+        if (isDrawing) {
+          isDrawing = false;
+          drawCtx.closePath();
+        }
+      }
+
+      drawingCanvas.addEventListener("mousedown", startDraw);
+      drawingCanvas.addEventListener("mousemove", drawMove);
+      window.addEventListener("mouseup", stopDraw);
+
+      drawingCanvas.addEventListener("touchstart", startDraw, { passive: false });
+      drawingCanvas.addEventListener("touchmove", drawMove, { passive: false });
+      window.addEventListener("touchend", stopDraw);
+    }
+    initDrawingCanvas();
+
+    function setDrawColor(col, el) {
+      isRainbowMode = false;
+      currentColor = col;
+      document.querySelectorAll(".color-dot").forEach(d => d.classList.remove("active"));
+      if (el) el.classList.add("active");
+    }
+
+    function toggleRainbowMode(el) {
+      isRainbowMode = true;
+      document.querySelectorAll(".color-dot").forEach(d => d.classList.remove("active"));
+      SoundEngine.playPop();
+    }
+
+    function setBrushSize(sz) {
+      currentBrushSize = sz;
+      SoundEngine.playPop();
+    }
+
+    function clearCanvas() {
+      SoundEngine.playPop();
+      drawCtx.fillStyle = "#ffffff";
+      drawCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    }
+
+    function saveDrawing() {
+      SoundEngine.playCorrect();
+      launchConfetti(40);
+      const link = document.createElement("a");
+      link.download = "karyaku_edukids.png";
+      link.href = drawingCanvas.toDataURL("image/png");
+      link.click();
+      speakIndonesian("Karyamu berhasil disimpan! Keren sekali!");
+    }
+
+    function startDrawingStudio() {
+      SoundEngine.playPop();
+      document.getElementById("mainMenuView").style.display = "none";
+      const stage = document.getElementById("gameStageView");
+      stage.style.display = "flex";
+
+      document.getElementById("stageGameTitle").textContent = "🎨 5. Kanvas Mewarnai & Gambar";
+      document.getElementById("stageQuestionText").textContent = "Warnai & Gambar Karyamu Sesuka Hati!";
+      document.getElementById("stageSubPrompt").textContent = "Gunakan kuas warna pelangi atau warna favoritmu:";
+      document.getElementById("stageBigVisual").style.display = "none";
+      document.getElementById("stageOptionsGrid").style.display = "none";
+      document.getElementById("stageWordSlots").style.display = "none";
+      document.getElementById("stageLetterTiles").style.display = "none";
+      document.getElementById("stageMemoryGrid").style.display = "none";
+      document.getElementById("btnNextQuestion").style.display = "none";
+      document.getElementById("stageFeedback").style.display = "none";
+
+      document.getElementById("drawingStudio").style.display = "flex";
+      speakIndonesian("Ayo kita menggambar dan mewarnai sesuka hatimu!");
+    }
+
+    // ── Stage Control & Flow ───────────────────────────────────────────────────
+    function startPlayGame(gameKey) {
+      SoundEngine.playPop();
+      gameState.currentGame = gameKey;
+      gameState.currentQuestionIndex = 0;
+      gameState.stageScore = 0;
+      document.getElementById("stageScoreText").textContent = "0";
+
+      document.getElementById("mainMenuView").style.display = "none";
+      const stage = document.getElementById("gameStageView");
+      stage.style.display = "flex";
+      document.getElementById("drawingStudio").style.display = "none";
+
+      const titleMap = {
+        animals: "🦁 1. Sahabat Satwa",
+        fruits: "🍎 2. Buah & Warna Ceria",
+        counting: "🍩 3. Hitung Ceria 1-10",
+        memory: "🎴 4. Memori Kembar",
+        alphabet: "🅰️ 6. Taman Abjad A-Z",
+        shapes: "🔺 7. Bentuk Geometri",
+        transport: "🚗 8. Sahabat Kendaraan",
+        senses: "👁️ 9. Panca Indra & Tubuh",
+        weather: "🌦️ 10. Cuaca & Langit",
+        clothes: "👗 11. Baju & Pakaian",
+        veggies: "🥦 12. Sayuran Sehat",
+        music: "🎵 13. Alat Musik Ceria",
+        hygiene: "🪥 14. Hidup Bersih Ceria",
+        family: "👨‍👩‍👧 15. Keluargaku Sayang",
+        color_mix: "🌈 16. Sulap Campur Warna",
+        math: "➕ 1. Matematika Juara",
+        multiply: "✖️ 2. Perkalian Ceria",
+        spelling: "🔤 3. Susun Ejaan Kata",
+        quiz: "🧠 4. Cerdas Cermat Ceria",
+        clock: "🕒 5. Belajar Jam Waktu",
+        money: "💰 6. Kantin Pintar (Uang)",
+        space: "🪐 7. Petualangan Planet",
+        heroes: "🇮🇩 8. Nusantara Juara",
+        compare: "⚖️ 9. Besar vs Kecil",
+        animal_diet: "🥩 10. Makanan Satwa",
+        plants: "🌿 11. Sahabat Tumbuhan",
+        islands: "🗺️ 12. Peta Pulau Nusantara",
+        energy: "💡 13. Hemat Energi Juara",
+        antonyms: "📚 14. Lawan Kata Pintar",
+        pancasila: "📜 15. Bintang Pancasila",
+        riddles: "🧩 16. Teka-Teki Asah Otak"
+      };
+      document.getElementById("stageGameTitle").textContent = titleMap[gameKey] || "Bermain & Belajar";
+
+      if (gameKey === "memory") {
+        setupMemoryGame();
+      } else if (gameKey === "spelling") {
+        gameState.questions = [...GAME_BANKS.spelling].sort(() => Math.random() - 0.5);
+        loadSpellingQuestion();
+      } else {
+        gameState.questions = [...(GAME_BANKS[gameKey] || [])].sort(() => Math.random() - 0.5);
+        loadStandardQuestion();
+      }
+    }
+
+    function exitToMainMenu() {
+      SoundEngine.playPop();
+      document.getElementById("gameStageView").style.display = "none";
+      document.getElementById("mainMenuView").style.display = "flex";
+      hideFeedback();
+    }
+
+    function hideFeedback() {
+      const fb = document.getElementById("stageFeedback");
+      fb.style.display = "none";
+      document.getElementById("btnNextQuestion").style.display = "none";
+    }
+
+    // ── Multiple Choice Quiz Logic ─────────────────────────────────────────────
+    function loadStandardQuestion() {
+      hideFeedback();
+      const qBox = gameState.questions[gameState.currentQuestionIndex];
+      if (!qBox) {
+        finishGameRound();
+        return;
+      }
+
+      document.getElementById("stageWordSlots").style.display = "none";
+      document.getElementById("stageLetterTiles").style.display = "none";
+      document.getElementById("stageMemoryGrid").style.display = "none";
+      document.getElementById("drawingStudio").style.display = "none";
+      document.getElementById("stageBigVisual").style.display = "inline-block";
+      document.getElementById("stageOptionsGrid").style.display = "grid";
+
+      document.getElementById("stageQuestionText").textContent = qBox.q;
+      document.getElementById("stageSubPrompt").textContent = "Pilihlah salah satu jawaban yang benar:";
+      document.getElementById("stageBigVisual").textContent = qBox.icon;
+
+      speakIndonesian(qBox.q);
+
+      const grid = document.getElementById("stageOptionsGrid");
+      grid.innerHTML = "";
+      const shuffledOpts = [...qBox.options].sort(() => Math.random() - 0.5);
+
+      shuffledOpts.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opt-card";
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswerClick(btn, opt, qBox.ans, qBox.hint);
+        grid.appendChild(btn);
+      });
+    }
+
+    function handleAnswerClick(btnEl, chosen, correct, hint) {
+      const allBtns = document.querySelectorAll(".opt-card");
+      allBtns.forEach(b => b.style.pointerEvents = "none");
+
+      const fb = document.getElementById("stageFeedback");
+      const nextBtn = document.getElementById("btnNextQuestion");
+
+      if (chosen === correct) {
+        SoundEngine.playCorrect();
+        launchConfetti(45);
+        btnEl.classList.add("correct");
+        addStars(1);
+
+        fb.className = "feedback-banner success";
+        fb.style.display = "flex";
+        document.getElementById("feedbackIcon").textContent = "🎉";
+        document.getElementById("feedbackText").textContent = "Hebat Sekali! Jawabanmu Benar!";
+        speakIndonesian("Wah hebat sekali! Jawaban kamu benar!");
+      } else {
+        SoundEngine.playWrong();
+        btnEl.classList.add("wrong");
+
+        allBtns.forEach(b => {
+          if (b.textContent === correct) b.classList.add("correct");
+        });
+
+        fb.className = "feedback-banner fail";
+        fb.style.display = "flex";
+        document.getElementById("feedbackIcon").textContent = "💡";
+        document.getElementById("feedbackText").textContent = hint || "Jawaban yang benar adalah: " + correct;
+        speakIndonesian("Tetap semangat! " + (hint || "Jawaban yang benar adalah " + correct));
+      }
+
+      nextBtn.style.display = "inline-flex";
+    }
+
+    function loadNextQuestion() {
+      SoundEngine.playPop();
+      gameState.currentQuestionIndex++;
+      if (gameState.currentGame === "spelling") {
+        loadSpellingQuestion();
+      } else {
+        loadStandardQuestion();
+      }
+    }
+
+    // ── Spelling Word Game Logic ───────────────────────────────────────────────
+    let spellingCurrent = { word: "", currentInput: [], tiles: [] };
+
+    function loadSpellingQuestion() {
+      hideFeedback();
+      const item = gameState.questions[gameState.currentQuestionIndex];
+      if (!item) {
+        finishGameRound();
+        return;
+      }
+
+      document.getElementById("stageOptionsGrid").style.display = "none";
+      document.getElementById("stageMemoryGrid").style.display = "none";
+      document.getElementById("drawingStudio").style.display = "none";
+      document.getElementById("stageBigVisual").style.display = "inline-block";
+      document.getElementById("stageWordSlots").style.display = "flex";
+      document.getElementById("stageLetterTiles").style.display = "flex";
+
+      document.getElementById("stageQuestionText").textContent = "Susunlah huruf-huruf menjadi kata yang tepat!";
+      document.getElementById("stageSubPrompt").textContent = "Petunjuk: " + item.hint;
+      document.getElementById("stageBigVisual").textContent = item.icon;
+
+      spellingCurrent.word = item.word.toUpperCase();
+      spellingCurrent.currentInput = [];
+
+      speakIndonesian("Susunlah kata untuk " + item.hint);
+
+      const slotsContainer = document.getElementById("stageWordSlots");
+      slotsContainer.innerHTML = "";
+      for (let i = 0; i < spellingCurrent.word.length; i++) {
+        const slot = document.createElement("div");
+        slot.className = "slot-box";
+        slot.id = "slot_" + i;
+        slot.textContent = "";
+        slotsContainer.appendChild(slot);
+      }
+
+      const tilesContainer = document.getElementById("stageLetterTiles");
+      tilesContainer.innerHTML = "";
+      const letters = spellingCurrent.word.split("").sort(() => Math.random() - 0.5);
+
+      letters.forEach((char) => {
+        const tBtn = document.createElement("button");
+        tBtn.type = "button";
+        tBtn.className = "letter-btn";
+        tBtn.textContent = char;
+        tBtn.onclick = () => handleLetterPick(tBtn, char);
+        tilesContainer.appendChild(tBtn);
+      });
+    }
+
+    function handleLetterPick(btnEl, char) {
+      if (spellingCurrent.currentInput.length >= spellingCurrent.word.length) return;
+      SoundEngine.playPop();
+
+      btnEl.classList.add("used");
+      const currentIdx = spellingCurrent.currentInput.length;
+      spellingCurrent.currentInput.push({ char, btnEl });
+
+      const slot = document.getElementById("slot_" + currentIdx);
+      if (slot) {
+        slot.textContent = char;
+        slot.classList.add("filled");
+      }
+
+      if (spellingCurrent.currentInput.length === spellingCurrent.word.length) {
+        const formed = spellingCurrent.currentInput.map(x => x.char).join("");
+        const fb = document.getElementById("stageFeedback");
+        const nextBtn = document.getElementById("btnNextQuestion");
+
+        if (formed === spellingCurrent.word) {
+          SoundEngine.playCorrect();
+          launchConfetti(55);
+          addStars(2);
+          fb.className = "feedback-banner success";
+          fb.style.display = "flex";
+          document.getElementById("feedbackIcon").textContent = "⭐";
+          document.getElementById("feedbackText").textContent = "Luar Biasa! Kata '" + spellingCurrent.word + "' Terbaca Benar!";
+          speakIndonesian("Luar biasa pintar! Kata " + spellingCurrent.word + " tersusun benar!");
+          nextBtn.style.display = "inline-flex";
+        } else {
+          SoundEngine.playWrong();
+          fb.className = "feedback-banner fail";
+          fb.style.display = "flex";
+          document.getElementById("feedbackIcon").textContent = "🔄";
+          document.getElementById("feedbackText").textContent = "Belum tepat, ayo kita coba susun lagi!";
+          speakIndonesian("Belum tepat, ayo kita coba susun lagi!");
+
+          setTimeout(() => {
+            spellingCurrent.currentInput.forEach((item, idx) => {
+              item.btnEl.classList.remove("used");
+              const s = document.getElementById("slot_" + idx);
+              if (s) { s.textContent = ""; s.classList.remove("filled"); }
+            });
+            spellingCurrent.currentInput = [];
+            fb.style.display = "none";
+          }, 1500);
+        }
+      }
+    }
+
+    // ── Memory Match Game Logic ────────────────────────────────────────────────
+    function setupMemoryGame() {
+      hideFeedback();
+      document.getElementById("stageOptionsGrid").style.display = "none";
+      document.getElementById("stageWordSlots").style.display = "none";
+      document.getElementById("stageLetterTiles").style.display = "none";
+      document.getElementById("stageBigVisual").style.display = "none";
+      document.getElementById("drawingStudio").style.display = "none";
+
+      document.getElementById("stageQuestionText").textContent = "Buka 2 kartu yang sama untuk mencari pasangannya!";
+      document.getElementById("stageSubPrompt").textContent = "Latihlah ingatanmu yang hebat:";
+
+      const memGrid = document.getElementById("stageMemoryGrid");
+      memGrid.style.display = "grid";
+      memGrid.innerHTML = "";
+
+      const icons = ["🐱", "🐶", "🦁", "🐰", "🐼", "🐸"];
+      const deck = [...icons, ...icons].sort(() => Math.random() - 0.5);
+
+      gameState.memoryFlipped = [];
+      gameState.memoryMatchedCount = 0;
+
+      speakIndonesian("Temukan pasangan kartu kembar yang sama!");
+
+      deck.forEach((icon) => {
+        const card = document.createElement("div");
+        card.className = "mem-card";
+        card.dataset.icon = icon;
+        card.innerHTML = "❓";
+        card.onclick = () => flipMemoryCard(card, icon);
+        memGrid.appendChild(card);
+      });
+    }
+
+    function flipMemoryCard(cardEl, icon) {
+      if (gameState.memoryFlipped.length >= 2 || cardEl.classList.contains("flipped") || cardEl.classList.contains("matched")) {
+        return;
+      }
+
+      SoundEngine.playPop();
+      cardEl.classList.add("flipped");
+      cardEl.textContent = icon;
+      gameState.memoryFlipped.push(cardEl);
+
+      if (gameState.memoryFlipped.length === 2) {
+        const [c1, c2] = gameState.memoryFlipped;
+        if (c1.dataset.icon === c2.dataset.icon) {
+          SoundEngine.playCorrect();
+          c1.classList.add("matched");
+          c2.classList.add("matched");
+          gameState.memoryFlipped = [];
+          gameState.memoryMatchedCount += 2;
+          addStars(1);
+
+          if (gameState.memoryMatchedCount >= 12) {
+            launchConfetti(70);
+            SoundEngine.playFanfare();
+            const fb = document.getElementById("stageFeedback");
+            fb.className = "feedback-banner success";
+            fb.style.display = "flex";
+            document.getElementById("feedbackIcon").textContent = "🏆";
+            document.getElementById("feedbackText").textContent = "Sempurna! Kamu Berhasil Menemukan Semua Pasangan!";
+            speakIndonesian("Hebat sekali! Semua kartu kembar berhasil ditemukan!");
+            document.getElementById("btnNextQuestion").style.display = "inline-flex";
+            document.getElementById("btnNextQuestion").textContent = "Main Lagi!";
+            document.getElementById("btnNextQuestion").onclick = () => setupMemoryGame();
+          }
+        } else {
+          SoundEngine.playWrong();
+          setTimeout(() => {
+            c1.classList.remove("flipped");
+            c2.classList.remove("flipped");
+            c1.textContent = "❓";
+            c2.textContent = "❓";
+            gameState.memoryFlipped = [];
+          }, 900);
+        }
+      }
+    }
+
+    // ── Finish Game Round ──────────────────────────────────────────────────────
+    function finishGameRound() {
+      SoundEngine.playFanfare();
+      launchConfetti(80);
+      const fb = document.getElementById("stageFeedback");
+      fb.className = "feedback-banner success";
+      fb.style.display = "flex";
+      document.getElementById("feedbackIcon").textContent = "👑";
+      document.getElementById("feedbackText").textContent = "Luar Biasa! Ronde Ini Selesai dengan Nilai Bintang ⭐⭐⭐!";
+      speakIndonesian("Hore! Ronde permainan selesai! Kamu anak pintar dan hebat!");
+
+      document.getElementById("stageQuestionText").textContent = "Selamat! Kamu Telah Menuntaskan Tantangan!";
+      document.getElementById("stageSubPrompt").textContent = "Ayo ambil piagam bintang atau coba game seru lainnya!";
+      document.getElementById("stageBigVisual").textContent = "🏆";
+      document.getElementById("stageOptionsGrid").innerHTML = "";
+
+      const nextBtn = document.getElementById("btnNextQuestion");
+      nextBtn.style.display = "inline-flex";
+      nextBtn.innerHTML = "<span>Kembali ke Menu</span> <span>🏠</span>";
+      nextBtn.onclick = exitToMainMenu;
+    }
+
+    // ── Certificate Modal Logic ────────────────────────────────────────────────
+    function openCertificateModal() {
+      SoundEngine.playPop();
+      const today = new Date();
+      const dateStr = today.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+      document.getElementById("certDateText").textContent = dateStr;
+      document.getElementById("certModal").classList.add("active");
+    }
+
+    function closeCertificateModal() {
+      SoundEngine.playPop();
+      document.getElementById("certModal").classList.remove("active");
+    }
+
+    function printCertificate() {
+      SoundEngine.playCorrect();
+      window.print();
+    }
+  </script>
+</body>
+</html>
